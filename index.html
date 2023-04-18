@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./css/style.css">
     <title>E-Commerce</title>
 
@@ -12,14 +17,17 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg" data-bs-theme="dark" style="background-color: #06395e;">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary" data-bs-theme="dark"
+            style="background-color: #06395e;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">VarPadel</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Inicio</a>
                         </li>
@@ -30,121 +38,47 @@
                             <a class="nav-link" href="#">Pricing</a>
                         </li>
                     </ul>
+                    <!-- Button trigger modal -->
+                    <button id="btnCarrito" type="button" class="btn " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="fa-sharp fa-solid fa-cart-shopping fa-lg" style="color: #ffffff;"></i>
+                    </button>
+                    <!-- Modal -->
+
                 </div>
             </div>
         </nav>
     </header>
-    <section class="catalogo"> 
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="./img/paleta-belapro.png" alt="">
-            </div>
-            <h2>Wilson - BelaPro</h2>
-            <h3>$99.999</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="./img/paleta-cigiotroy.png" alt="">
-            </div>
-            <h2>Cigio - Troy Pro</h2>
-            <h3>$12.500</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="./img/paleta-dabberrober8.png" alt="">
-            </div>
-            <h2>Dabber - Rober 8 Platinum</h2>
-            <h3>$24.000</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="./img/paleta-royalmaquina.png" alt="">
-            </div>
-            <h2>Royal - Maquina</h2>
-            <h3>$37.590</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="./img/paleta-adidaszucur.png" alt="">
-            </div>
-            <h2>Adidas - Azur CTRL 2.0 LTD</h2>
-            <h3>$49.999</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="../img/paleta-dfjumper3k.png" alt="">
-            </div>
-            <h2>DF - Jumper 3k</h2>
-            <h3>$29.950</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="../img/paleta-dunlopinferno.png" alt="">
-            </div>
-            <h2>Dunlop - Inferno</h2>
-            <h3>$54.800</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="../img/paleta-headzyphirpro.png" alt="">
-            </div>
-            <h2>Head - Zephyr Pro Graphene</h2>
-            <h3>$59.500</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="../img/paleta-vairoreno.png" alt="">
-            </div>
-            <h2>Vairo - Reno 7.3</h2>
-            <h3>$35.000</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="../img/pelotas-snauwaert.png" alt="">
-            </div>
-            <h2>Snauwaert - Tubo x3 Pelotas</h2>
-            <h3>$2.300</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="../img/pelotas-headpadelpro.png" alt="">
-            </div>
-            <h2>Head - PadelPro (Tubo x3 pelotas)</h2>
-            <h3>$3.850</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="../img/overgrip-adidas.png" alt="">
-            </div>
-            <h2>Adidas - Overgrip</h2>
-            <h3>$850</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="../img/protector-bullpadeltransparente.png" alt="">
-            </div>
-            <h2>Bullpadel - Protector</h2>
-            <h3>$1.700</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="../img/camiseta-kadur.png" alt="">
-            </div>
-            <h2>Kadur - Camiseta</h2>
-            <h3>$3.650</h3>
-        </div>
-        <div class="box_venta">
-            <div class="box_venta_img">
-            <img src="../img/camiseta-vairo.png" alt="">
-            </div>
-            <h2>Camiseta - Vairo</h2>
-            <h3>$7.100</h3>
-        </div>
-    </section>
-</section>
+    <main>
+        <section id="contenedorProductos" class="contenedor d-flex flex-wrap justify-content-center gap-3 " >
+        </section>
+    </main>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Carrito</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-column"id="contenedorCarrito">
 
+                    </div>                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Seguir comprando</button>
+                    <button type="button" class="btn btn-danger">Finalizar Compra</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+
+    </footer>
 
     <script src="app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
+    </script>
 </body>
+
 </html>

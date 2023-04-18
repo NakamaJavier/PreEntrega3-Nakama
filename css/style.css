@@ -1,58 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital@0;1&family=Roboto:ital@0;1&Secular+One&display=swap');
-.catalogo{
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-evenly
-}
-.box_venta{
-    background-color: white;
-    height: 250px;
-    width: 200px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin:10px;
-    
+body{
+    background-color: #002da81e;
 }
 
-.box_venta:hover {
-    /* Agrego efecto de escalado a las cajas de producto*/
-    scale: 105%;
+.contenedor{
+    margin: 10px;
+    margin-top: 20px;
 }
-.box_venta_img{
+
+.card img{
+    width: 95%;
+    margin: auto;
+    margin-top: 8px;
+    height: 7.8vw;
+}
+
+.card h4{
     display: flex;
-    flex-direction: row;
+    align-items: flex-start;
     justify-content: center;
-}
-.catalogo img{
-    height: 180px;
-    width: auto;
-    max-width: 150px;
-    margin: 3px;
-
-}
-.catalogo div h2{
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
     text-align: center;
-    line-height: 18px;
-    letter-spacing: 2px;
-    word-spacing: 0px;
-    color: #16256c;
+    color: rgb(2, 2, 119);
+    height: 50px;
 }
-.catalogo div h3{
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: bolder;
-    font-size: 18px;
-    text-align: center;
-    line-height: 18px;
-    letter-spacing: 2px;
-    word-spacing: 0px;
-    color: #000000;
+.card a{
+    margin: auto;
+    margin-top: 8px;
 }
