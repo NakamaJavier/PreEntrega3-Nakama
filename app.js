@@ -86,8 +86,9 @@ productos.listaProductos= productosParseados
 productos.ordenarStock()
 
 //DOM
-
 const contenedorProductos = document.getElementById("contenedorProductos")
+const contenedorCarrito= document.getElementById("contenedorCarrito")
+
 for(let producto of productos.listaProductos){
     contenedorProductos.innerHTML += `
     <div class="card" style="width: 20rem;">
@@ -95,12 +96,36 @@ for(let producto of productos.listaProductos){
         <div class="card-body">
             <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
             <p class="card-text"><strong>Marca:</strong> ${producto.marca}</p>
-            <li class="list-group-item"><strong>Precio:</strong> $${producto.precio}</li>
+            <p class="card-text"><strong>Precio:</strong> $${producto.precio}</p>
             <div class="text-center">
-                <a href="#" class="btn btn-primary">Añadir al carrito <i class="fa-solid fa-cart-plus"></i> </a>
+                <a href="#" id="producto-${producto.id}" class="btn btn-primary">Añadir al carrito <i class="fa-solid fa-cart-plus"></i> </a>
             </div>
         </div>
-
     </div>
 </section>`
 }
+
+productos.listaProductos.forEach( producto => {
+    const btnAP = document.getElementById(`producto-${producto.id}`)
+    btnAP.addEventListener("click", ()=>{
+        productos.carritoCompra.push(producto)
+        contenedorCarrito.innerHTML+= `
+        <div class="card mb-3" style="max-width: 540px">
+            <dic class="row g-0">
+                <div class="col-md-7">
+                    <img src=${producto.img} class="card-img-top" alt="...">
+                </div>
+                <div class="col-md-5">
+                    <div class="card-body">
+                        <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
+                        <p class="card-text"><strong>Marca:</strong> ${producto.marca}</p>
+                        <p class="card-text"><strong>Precio:</strong> $${producto.precio}</p>
+                    </div>
+                </div>
+            </div>
+        </div>`
+    })
+        contenedorCarrito.innerHTML=""
+        
+    
+})
