@@ -15,6 +15,12 @@
     flex-direction: column;
     justify-content: space-around;
     margin:10px;
+    
+}
+
+.box_venta:hover {
+    /* Agrego efecto de escalado a las cajas de producto*/
+    scale: 105%;
 }
 .box_venta_img{
     display: flex;
@@ -32,9 +38,9 @@
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
-    line-height: 20px;
+    line-height: 18px;
     letter-spacing: 2px;
     word-spacing: 0px;
     color: #16256c;
@@ -43,9 +49,9 @@
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bolder;
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
-    line-height: 20px;
+    line-height: 18px;
     letter-spacing: 2px;
     word-spacing: 0px;
     color: #000000;
