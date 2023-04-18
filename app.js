@@ -125,7 +125,8 @@ productos.listaProductos.forEach( producto => {
             </div>
         </div>`
     })
-        contenedorCarrito.innerHTML=""
+        
+        console.log("ahora borro");
         
     
 })
