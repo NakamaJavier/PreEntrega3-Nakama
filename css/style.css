@@ -1,21 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital@0;1&family=Roboto:ital@0;1&Secular+One&display=swap');
-body{
+
+body {
     background-color: #002da81e;
 }
 
-.contenedor{
+.contenedor {
     margin: 10px;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.card img{
-    width: 95%;
+.card:hover{
+    scale: 105%;
+}
+.card img {
+    width: 18rem;
     margin: auto;
     margin-top: 8px;
-    height: 7.8vw;
+    height: 8rem;
 }
 
-.card h4{
+.card h4 {
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -23,7 +28,23 @@ body{
     color: rgb(2, 2, 119);
     height: 50px;
 }
-.card a{
+
+.card a {
     margin: auto;
     margin-top: 8px;
 }
+
+.top-f{
+    top: 4px !important;;
+}
+.start-f {
+    left: 85%!important;
+}
+
+/* CSS para posicionar el bade cerca del carrito*/
+.cart {
+    position: relative;
+    margin-right: 15px;
+    margin-top: 5px;
+}
+
