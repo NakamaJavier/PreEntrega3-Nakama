@@ -42,7 +42,7 @@ class ProductHandler {
     }
 }
 //Base de datos del stock (Se colocaron en desorden los ID  y talles para mostrar como funciona el metodo que ordena el stock)
-//                        ID      NOMBRE                   MARCA                IMG                                                                        TALLE/CANTIDAD                                                                                     PRECIO                  
+
 let prod1 = new Producto(15, "AirMax Excee", "Nike", "./img/AirMaxExcee.png", [{
     talle: 39,
     cantidad: 10
@@ -289,30 +289,41 @@ let productos = new ProductHandler
 
 productos.listaProductos = productosParseados
 productos.ordenarStock()
-
+console.log(productos.listaProductos);
 //DOM
 const contenedorProductos = document.getElementById("contenedorProductos")
 const contenedorCarrito = document.getElementById("contenedorCarrito")
 const btnCarrito = document.getElementById("btnCarrito")
 
 for (let producto of productos.listaProductos) {
+    let opciones1 
+    for(let stock of producto.stock){
+        opciones1 +=`<option value="${stock.talle}">${stock.talle}</option>
+        `
+    }
     contenedorProductos.innerHTML += `
-    <div class="card" style="width: 20rem;">
+    <div class="card cardHover" style="width: 20rem;">
         <img src=${producto.img} class="card-img-top" alt="...">
         <div class="card-body">
             <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
-            <p class="card-text"><strong>Marca:</strong> ${producto.marca}</p>
-            <p class="card-text"><strong>Precio:</strong> $${producto.precio}</p>
+            <p class="card-text ml8px"><strong>Marca:</strong> ${producto.marca} <br> <strong>Precio:</strong> $${producto.precio}</p>
             <div class="text-center">
                 <a href="#" id="producto-${producto.id}" class="btn btn-primary">Añadir al carrito <i class="fa-solid fa-cart-plus"></i> </a>
+                <div>
+                    <select id="menu1-${producto.id}">
+                        <option value="">Elija un talle</option>
+                        ${opciones1}
+                    </select>
+                    <select id="menu2-${producto.id}" disabled>
+                        <option value="">Cantidad</option>
+                    </select>
+                </div>
             </div>
         </div>
-    </div>
-</section>`
+    </div>`
 }
 
-productos.carritoCompra = JSON.parse(localStorage.getItem(`carrito`))||[]
-console.log(productos.carritoCompra)
+productos.carritoCompra = JSON.parse(localStorage.getItem(`carrito`)) || []
 for (let producto of productos.carritoCompra) {
     contenedorCarrito.innerHTML += `
     <div class="card mb-3" style="max-width: 540px">
@@ -321,34 +332,46 @@ for (let producto of productos.carritoCompra) {
                 <img src=${producto.img} class="card-img-top" alt="...">
             </div>
             <div class="col-md-5">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column align-items-center justify-content-evenly cardPad">
                     <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
-                    <p class="card-text"><strong>Marca:</strong> ${producto.marca}</p>
-                    <p class="card-text"><strong>Precio:</strong> $${producto.precio}</p>
+                    <p class="card-text ml8px"><strong>Marca:</strong> ${producto.marca} <br> <strong>Precio:</strong> $${producto.precio}</p>
                 </div>
             </div>
         </div>
     </div>`
 }
-if(productos.carritoCompra.length>0)
-        {
-            btnCarrito.innerHTML= `
+if (productos.carritoCompra.length > 0) {
+    btnCarrito.innerHTML = `
                         <i class="fa-sharp fa-solid fa-cart-shopping fa-lg" style="color: #ffffff;"></i>
                         <span class="position-absolute  start-f translate-middle badge rounded-pill bg-danger top-f">
                             ${productos.carritoCompra.length}
                         </span>
                         `
-        }
-        else
-            btnCarrito.innerHTML= `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
+} else
+    btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
 
-//Eventos
+////////////////////Eventos
+
+productos.listaProductos.forEach(producto => {
+    const menu1 = document.getElementById(`menu1-${producto.id}`)
+    menu1.addEventListener('change',() => {
+        const menu2 = document.getElementById(`menu2-${producto.id}`)
+        menu2.disabled = false
+        menu2.innerHTML = `<option value="">Cantidad</option>`
+        const cantidadStockXTalle = producto.stock[producto.stock.findIndex(obj => obj.talle == menu1.value)].cantidad
+        for(let i=0;i<cantidadStockXTalle;i++){
+        menu2.innerHTML +=`<option value="">${cantidadStockXTalle-i}</option>`
+        }
+        const opcionSeleccionada = menu1.value;
+    })
+})
+
 productos.listaProductos.forEach(producto => {
     const btnAP = document.getElementById(`producto-${producto.id}`)
     btnAP.addEventListener("click", () => {
         productos.carritoCompra.push(producto)
         localStorage.setItem(`carrito`, JSON.stringify(productos.carritoCompra))
-        contenedorCarrito.innerHTML=""
+        contenedorCarrito.innerHTML = ""
         console.log(productos.carritoCompra)
         for (let producto of productos.carritoCompra) {
             contenedorCarrito.innerHTML += `
@@ -358,27 +381,23 @@ productos.listaProductos.forEach(producto => {
                         <img src=${producto.img} class="card-img-top" alt="...">
                     </div>
                     <div class="col-md-5">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-evenly cardPad">
                             <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
-                            <p class="card-text"><strong>Marca:</strong> ${producto.marca}</p>
-                            <p class="card-text"><strong>Precio:</strong> $${producto.precio}</p>
+                            <p class="card-text ml8px"><strong>Marca:</strong> ${producto.marca} <br> <strong>Precio:</strong> $${producto.precio}</p>
                         </div>
                     </div>
                 </div>
             </div>`
         }
-        if(productos.carritoCompra.length>0)
-        {
-            btnCarrito.innerHTML= `
+        if (productos.carritoCompra.length > 0) {
+            btnCarrito.innerHTML = `
                         <i class="fa-sharp fa-solid fa-cart-shopping fa-lg" style="color: #ffffff;"></i>
                         <span class="position-absolute  start-f translate-middle badge rounded-pill bg-danger top-f">
                             ${productos.carritoCompra.length}
                         </span>
                         `
-        }
-        else
-            btnCarrito.innerHTML= `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
-        
+        } else
+            btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
+
     })
 })
-a
