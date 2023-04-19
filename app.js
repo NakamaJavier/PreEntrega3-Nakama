@@ -360,7 +360,7 @@ productos.listaProductos.forEach(producto => {
         menu2.innerHTML = `<option value="">Cantidad</option>`
         const cantidadStockXTalle = producto.stock[producto.stock.findIndex(obj => obj.talle == menu1.value)].cantidad
         for(let i=0;i<cantidadStockXTalle;i++){
-        menu2.innerHTML +=`<option value="">${cantidadStockXTalle-i}</option>`
+        menu2.innerHTML +=`<option value="">${i+1}</option>`
         }
         const opcionSeleccionada = menu1.value;
     })
