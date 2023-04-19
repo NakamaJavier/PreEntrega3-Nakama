@@ -18,6 +18,16 @@ class Producto {
         this.precio = precio;
     }
 }
+class Compra {
+    constructor(id, nombre, img, talle, cantidad, precio) {
+        this.id = id
+        this.nombre = nombre
+        this.img = img
+        this.talle = talle
+        this.cantidad = cantidad
+        this.precio = precio
+    }
+}
 class ProductHandler {
     constructor() {
         this.listaProductos = []
@@ -289,12 +299,13 @@ let productos = new ProductHandler
 
 productos.listaProductos = productosParseados
 productos.ordenarStock()
-console.log(productos.listaProductos);
-//DOM
+
+///////////////////////////DOM
 const contenedorProductos = document.getElementById("contenedorProductos")
 const contenedorCarrito = document.getElementById("contenedorCarrito")
 const btnCarrito = document.getElementById("btnCarrito")
 
+//Muestro los productos para comprar
 for (let producto of productos.listaProductos) {
     let opciones1 
     for(let stock of producto.stock){
@@ -308,21 +319,23 @@ for (let producto of productos.listaProductos) {
             <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
             <p class="card-text ml8px"><strong>Marca:</strong> ${producto.marca} <br> <strong>Precio:</strong> $${producto.precio}</p>
             <div class="text-center">
-                <a href="#" id="producto-${producto.id}" class="btn btn-primary">Añadir al carrito <i class="fa-solid fa-cart-plus"></i> </a>
-                <div>
-                    <select id="menu1-${producto.id}">
-                        <option value="">Elija un talle</option>
+                <a href="#" id="producto-${producto.id}" class="btn btn-primary">Añadir <i class="fa-solid fa-cart-plus"></i> </a>
+                <div class="menues">
+                    <select class="menu1" id="menu1-${producto.id}">
+                        <option value="0">Talle</option>
                         ${opciones1}
                     </select>
-                    <select id="menu2-${producto.id}" disabled>
-                        <option value="">Cantidad</option>
+                    <select class="menu2" id="menu2-${producto.id}" disabled>
+                        <option value="0">Cantidad</option>
                     </select>
+                    <label id="cantidadMax-${producto.id}" for="menu2-${producto.id}">
+                    </label>
                 </div>
             </div>
         </div>
     </div>`
 }
-
+/////////////CARGO EL CARRITO GUARDADO EN EL LOCALSTORAGE Y PONGO EL CODIGO DEL CARRITO EN HTML (SOLO SE MUESTRA SI SE ACCIONA EL EVENTO)
 productos.carritoCompra = JSON.parse(localStorage.getItem(`carrito`)) || []
 for (let producto of productos.carritoCompra) {
     contenedorCarrito.innerHTML += `
@@ -334,12 +347,13 @@ for (let producto of productos.carritoCompra) {
             <div class="col-md-5">
                 <div class="card-body d-flex flex-column align-items-center justify-content-evenly cardPad">
                     <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
-                    <p class="card-text ml8px"><strong>Marca:</strong> ${producto.marca} <br> <strong>Precio:</strong> $${producto.precio}</p>
+                    <p class="card-text ml8px"><strong>Talle:</strong> ${producto.talle}<br><strong>Cantidad:</strong> ${producto.cantidad} <br> <strong>Precio:</strong> $${producto.precio}</p>
                 </div>
             </div>
         </div>
     </div>`
 }
+//MUESTRO EL ICONO DE CANTIDAD DE ELEMENTOS DEL CARRITO
 if (productos.carritoCompra.length > 0) {
     btnCarrito.innerHTML = `
                         <i class="fa-sharp fa-solid fa-cart-shopping fa-lg" style="color: #ffffff;"></i>
@@ -352,43 +366,70 @@ if (productos.carritoCompra.length > 0) {
 
 ////////////////////Eventos
 
+//EVENTO SI TOCO EL MENU DE TALLES
 productos.listaProductos.forEach(producto => {
     const menu1 = document.getElementById(`menu1-${producto.id}`)
     menu1.addEventListener('change',() => {
         const menu2 = document.getElementById(`menu2-${producto.id}`)
-        menu2.disabled = false
-        menu2.innerHTML = `<option value="">Cantidad</option>`
-        const cantidadStockXTalle = producto.stock[producto.stock.findIndex(obj => obj.talle == menu1.value)].cantidad
-        for(let i=0;i<cantidadStockXTalle;i++){
-        menu2.innerHTML +=`<option value="">${cantidadStockXTalle-i}</option>`
+        const cantidadMax = document.getElementById(`cantidadMax-${producto.id}`)
+        menu2.innerHTML=`<option value="0">Cantidad</option>`
+        if(menu1.value==0){
+            menu2.disabled = true
+            cantidadMax.innerHTML=""
         }
-        const opcionSeleccionada = menu1.value;
+        else{
+            menu2.disabled = false
+            const cantidadStockXTalle = producto.stock[producto.stock.findIndex(obj => obj.talle == menu1.value)].cantidad
+            for(let i=0;i<cantidadStockXTalle;i++){
+            menu2.innerHTML +=`<option value="${i+1}">${i+1}</option>`
+            }
+            cantidadMax.innerHTML = `(${cantidadStockXTalle})`
+        }
     })
 })
 
+//EVENTO SI TOCO UN BOTON DE AÑADIR AL CARRITO
 productos.listaProductos.forEach(producto => {
     const btnAP = document.getElementById(`producto-${producto.id}`)
     btnAP.addEventListener("click", () => {
-        productos.carritoCompra.push(producto)
-        localStorage.setItem(`carrito`, JSON.stringify(productos.carritoCompra))
-        contenedorCarrito.innerHTML = ""
-        console.log(productos.carritoCompra)
-        for (let producto of productos.carritoCompra) {
-            contenedorCarrito.innerHTML += `
-            <div class="card mb-3" style="max-width: 540px">
-                <dic class="row g-0">
-                    <div class="col-md-7">
-                        <img src=${producto.img} class="card-img-top" alt="...">
-                    </div>
-                    <div class="col-md-5">
-                        <div class="card-body d-flex flex-column align-items-center justify-content-evenly cardPad">
-                            <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
-                            <p class="card-text ml8px"><strong>Marca:</strong> ${producto.marca} <br> <strong>Precio:</strong> $${producto.precio}</p>
+        const menu1 = document.getElementById(`menu1-${producto.id}`)
+        const menu2 = document.getElementById(`menu2-${producto.id}`)
+        let compra = new Compra(producto.id,producto.nombre,producto.img,parseInt(menu1.value),parseInt(menu2.value),producto.precio)
+        if(compra.talle!=0&&compra.cantidad!=0)
+        {
+            let indexTalle = productos.carritoCompra.findIndex(obj => obj.talle == menu1.value)
+            if(indexTalle!=-1){
+                const cantidadStockXTalle = producto.stock[producto.stock.findIndex(obj => obj.talle == menu1.value)].cantidad
+                if(productos.carritoCompra[indexTalle].cantidad+parseInt(menu2.value)<=cantidadStockXTalle){
+                    productos.carritoCompra[indexTalle].cantidad += parseInt(menu2.value)
+                }
+                else
+                    alert("No hay stock suficiente")
+            }
+            else{
+                productos.carritoCompra.push(compra)
+            }
+            localStorage.setItem(`carrito`, JSON.stringify(productos.carritoCompra))
+            contenedorCarrito.innerHTML = ""
+            console.log(productos.carritoCompra)
+            for (let producto of productos.carritoCompra) {
+                contenedorCarrito.innerHTML += `
+                <div class="card mb-3" style="max-width: 540px">
+                    <dic class="row g-0">
+                        <div class="col-md-7">
+                            <img src=${producto.img} class="card-img-top" alt="...">
+                        </div>
+                        <div class="col-md-5">
+                            <div class="card-body d-flex flex-column align-items-center justify-content-evenly cardPad">
+                                <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
+                                <p class="card-text ml8px"><strong>Talle:</strong> ${producto.talle}<br><strong>Cantidad:</strong> ${producto.cantidad} <br> <strong>Precio:</strong> $${producto.precio}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>`
+                </div>`
+            }
         }
+        //ACTUALIZO EL ICONO DE CANTIDAD DE PRODUCTOS DEL CARRITO
         if (productos.carritoCompra.length > 0) {
             btnCarrito.innerHTML = `
                         <i class="fa-sharp fa-solid fa-cart-shopping fa-lg" style="color: #ffffff;"></i>
@@ -396,8 +437,16 @@ productos.listaProductos.forEach(producto => {
                             ${productos.carritoCompra.length}
                         </span>
                         `
-        } else
+        }
+        else
             btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
-
     })
+})
+
+const vaciarCarrito = document.getElementById(`vaciarCarrito`)
+vaciarCarrito.addEventListener(`click`,()=>{
+    productos.carritoCompra=[]
+    localStorage.setItem(`carrito`, JSON.stringify(productos.carritoCompra))
+    contenedorCarrito.innerHTML=""
+    btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
 })

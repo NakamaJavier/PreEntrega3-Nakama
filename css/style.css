@@ -11,7 +11,7 @@ body {
 }
 
 .cardHover:hover{
-    scale: 105%;
+    scale: 102%;
 }
 .card img {
     width: 18rem;
@@ -55,4 +55,17 @@ body {
 .cardPad{
     padding: 0px;
     margin-left: 10px;
+}
+
+.menues{
+    margin-top: 8px;
+}
+
+.menu1{
+    margin-right: 5px;
+}
+
+.prueba{
+    padding: 0px;
+    margin: 0px;
 }
