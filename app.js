@@ -394,6 +394,7 @@ productos.listaProductos.forEach(producto => {
     btnAP.addEventListener("click", () => {
         const menu1 = document.getElementById(`menu1-${producto.id}`)
         const menu2 = document.getElementById(`menu2-${producto.id}`)
+        const cantidadMax = document.getElementById(`cantidadMax-${producto.id}`)
         let compra = new Compra(producto.id,producto.nombre,producto.img,parseInt(menu1.value),parseInt(menu2.value),producto.precio)
         if(compra.talle!=0&&compra.cantidad!=0)
         {
@@ -407,11 +408,16 @@ productos.listaProductos.forEach(producto => {
                     alert("No hay stock suficiente")
             }
             else{
+                console.log("Se pusheo la compra");
                 productos.carritoCompra.push(compra)
             }
             localStorage.setItem(`carrito`, JSON.stringify(productos.carritoCompra))
             contenedorCarrito.innerHTML = ""
             console.log(productos.carritoCompra)
+            menu1.value=0
+            menu2.value=0
+            menu2.disabled = true
+            cantidadMax.innerHTML=""
             for (let producto of productos.carritoCompra) {
                 contenedorCarrito.innerHTML += `
                 <div class="card mb-3" style="max-width: 540px">
