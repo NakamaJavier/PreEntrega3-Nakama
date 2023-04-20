@@ -19,7 +19,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary" data-bs-theme="dark"
             style="background-color: #06395e;">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">VarPadel</a>
+                <a class="navbar-brand" href="#">VarShoes</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -38,8 +38,7 @@
                         </li>
                     </ul>
                     <!-- Button trigger modal -->
-                    <button id="btnCarrito" type="button" class="btn cart" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
+                    <button id="btnCarrito" type="button" class="btn cart" data-bs-toggle="modal" data-bs-target="#exampleModal"> <!--BOTON DEL CARRITO(btnCarrito) -->
                     </button>
                 </div>
             </div>
@@ -47,33 +46,7 @@
     </header>
     <main>
         <section id="contenedorProductos" class="contenedor d-flex flex-wrap justify-content-center gap-3 ">
-            <!-- <div class="card cardHover" style="width: 20rem;">
-                <img src=# class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
-                    <p class="card-text ml8px"><strong>Marca:</strong> ${producto.marca} <br> <strong>Precio:</strong>
-                        $${producto.precio}</p>
-                    <div class="text-center">
-                        <a href="#" id="producto-${producto.id}" class="btn btn-primary">Añadir <i
-                                class="fa-solid fa-cart-plus"></i></a>
-                        <div class="menues">
-                            <select class="menu1" id="menu1">
-                                <option value="">Talle</option>
-                                <option value="opcion1">Opción 1</option>
-                                <option value="opcion2">Opción 2</option>
-                                <option value="opcion3">Opción 3</option>
-                            </select>
-                            <select class="menu2" id="menu2" >
-                                <option value="">Cantidad</option>
-                                <option value="opcion1-1">Opción 1-1</option>
-                                <option value="opcion1-2">Opción 1-2</option>
-                                <option value="opcion1-3">Opción 1-3</option>
-                            </select>
-                            <p class="prueba">kaka</p>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+            <!-- ACA VAN LOS PRODUCTOS MOSTRADOS PARA VENDER (contenedorProductos) -->
         </section>
     </main>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -85,13 +58,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="d-flex flex-column" id="contenedorCarrito">
-
+                        <!-- ACA VAN LOS OBJETOS DEL CARRITO (contenedorCarrito)-->
                     </div>
                 </div>
                 <div class="modal-footer justify-content-around">
-                    <button type="button" id="vaciarCarrito" class="btn btn-dark" data-bs-dismiss="modal">Vaciar Carrito</button>
-                    <button type="button" id="" class="btn btn-primary" data-bs-dismiss="modal">Seguir comprando</button>
-                    <button type="button" id="" class="btn btn-danger">Finalizar Compra</button>
+                    <button type="button" id="btnVaciarCarrito" class="btn btn-dark" data-bs-dismiss="modal">Vaciar Carrito</button> <!--BOTON PARA VACIAR CARRITO (vaciarCarrito) -->
+                    <button type="button" id="" class="btn btn-primary" data-bs-dismiss="modal">Seguir comprando</button>         <!--BOTON PARA SEGUIR COMPRANDO -->
+                    <button type="button" id="finalizarCompra" class="btn btn-danger">Finalizar Compra</button>                   <!--BOTON PARA FINALIZAR LA COMPRA (finalizarCompra)-->
                 </div>
             </div>
         </div>
