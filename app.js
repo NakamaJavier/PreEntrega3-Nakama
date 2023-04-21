@@ -42,6 +42,9 @@ class ProductHandler {
         this.carritoCompra = []
         this.precioTotal = 0
     }
+    cargarCarritoDelLocal(){
+        this.carritoCompra = JSON.parse(localStorage.getItem(`carrito`)) || []
+    }
     //Ordena de menor a mayor los stocks de cada producto segun su talle
     ordenarPorTalles() {
         for (const producto of this.listaProductos) {
@@ -61,15 +64,7 @@ class ProductHandler {
         this.ordenarPorTalles()
         this.eliminarTalleSinStock()
     }
-    //vacia el el carrito tanto en el objeto que lo aloja como en el DOM
-    vaciar_carrito (){
-        this.carritoCompra=[]
-        console.log(this.carritoCompra);
-        localStorage.removeItem(`carrito`)
-        contenedorCarrito.innerHTML=""
-        btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
-        
-    }
+    
     //Crea las tarjetas de los productos dentro de listaFiltrada (si no se filtra nada es igual a listaProductos) y los muestra en el DOM
     mostrarProductos(){
         for (let producto of this.listaFiltrada) {
@@ -105,6 +100,9 @@ class ProductHandler {
     //Carga las tarjetas en el DOM correpondiente a los productos dentro de carritoCompra, como el icono del boton de carrito y su indicador de cantidad de productos
     mostrarCarrito(){
         this.calcularPrecioTotal()
+        contenedorCarrito.innerHTML=""
+        console.log("llego");
+        //Creo una tarjeta por cada elemento almacenado en carritoCompra
         for (let producto of this.carritoCompra) {
             contenedorCarrito.innerHTML += `
             <div class="card mb-3" style="max-width: 540px">
@@ -149,21 +147,26 @@ class ProductHandler {
             }
             cantidadMax.innerHTML = `(${cantidadStockXTalle})`
         }
+        
     }
-    addCompra(producto){
+    
+    //funcion que llama cuando se aprieta un boton de compra
+    addCompra(newCompra){
         console.log(this.carritoCompra); 
-        const menu1 = document.getElementById(`menu1-${producto.id}`)
-        const menu2 = document.getElementById(`menu2-${producto.id}`)
-        const cantidadMax = document.getElementById(`cantidadMax-${producto.id}`)
-        let compra = new Compra(producto.id,producto.nombre,producto.img,parseInt(menu1.value),parseInt(menu2.value),producto.precio)
-        if(compra.talle!=0&&compra.cantidad!=0)
+        const menu1 = document.getElementById(`menu1-${newCompra.id}`)
+        const menu2 = document.getElementById(`menu2-${newCompra.id}`)
+        const cantidadMax = document.getElementById(`cantidadMax-${newCompra.id}`)
+        // Cargo los valores del producto a comprar
+        if(parseInt(menu1.value)!=0&&parseInt(menu2.value)!=0)//si se coloco un talle y una cantidad
         {
+            let compra = new Compra(newCompra.id,newCompra.nombre,newCompra.img,parseInt(menu1.value),parseInt(menu2.value),newCompra.precio)
+            console.log("Entre a compra.talle!=0&&compra.cantidad!=0");
             let indexTalle = this.carritoCompra.findIndex(obj => obj.talle == menu1.value)
-            if(indexTalle!=-1){
-                console.log("entre a 161");
-                const cantidadStockXTalle = producto.stock[producto.stock.findIndex(obj => obj.talle == menu1.value)].cantidad
+            if(indexTalle!=-1){ //si ya se encontraba guardado en carritoCOmpra el mismo producto con el mismo talle
+                //se fija el stock del producto y talle seleccionado
+                const cantidadStockXTalle = newCompra.stock[newCompra.stock.findIndex(obj => obj.talle == menu1.value)].cantidad
+                //se fija si la cantidad nueva que se desea comprar mas la que ya se habia consultado anteriormente es igual o menor a la del stock
                 if(this.carritoCompra[indexTalle].cantidad+parseInt(menu2.value)<=cantidadStockXTalle){
-                    console.log(this.carritoCompra[indexTalle].cantidad);
                     this.carritoCompra[indexTalle].cantidad += parseInt(menu2.value)
                 }
                 else
@@ -173,12 +176,15 @@ class ProductHandler {
                 console.log("Se pusheo la compra");
                 this.carritoCompra.push(compra)
             }
+            console.log("Guardo el carrito en LocalStorage");
             localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
             contenedorCarrito.innerHTML = ""
             menu1.value=0
             menu2.value=0
+            compra={}
             menu2.disabled = true
             cantidadMax.innerHTML=""
+            console.log("Voy a realizar las tarjetas de los productos comprados segun el carritoCompra"+this.carritoCompra);
             for (let producto of this.carritoCompra) {
                 contenedorCarrito.innerHTML += `
                 <div class="card mb-3" style="max-width: 540px">
@@ -195,19 +201,28 @@ class ProductHandler {
                     </div>
                 </div>`
             }
+            this.calcularPrecioTotal()
+            contenedorCarrito.innerHTML += `<p class="precioTotal">Precio Total: <strong>$${this.precioTotal} </strong> </p>`
+            // ACTUALIZO EL ICONO DE CANTIDAD DE PRODUCTOS DEL CARRITO
+            if (this.carritoCompra.length > 0) {
+                console.log("la puta madre");
+                btnCarrito.innerHTML = `
+                            <i class="fa-sharp fa-solid fa-cart-shopping fa-lg" style="color: #ffffff;"></i>
+                            <span class="position-absolute  start-f translate-middle badge rounded-pill bg-danger top-f">
+                                ${this.carritoCompra.length}
+                            </span>
+                            `
+            }
+            else
+                btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
         }
-        //ACTUALIZO EL ICONO DE CANTIDAD DE PRODUCTOS DEL CARRITO
-        if (this.carritoCompra.length > 0) {
-            console.log("la puta madre");
-            btnCarrito.innerHTML = `
-                        <i class="fa-sharp fa-solid fa-cart-shopping fa-lg" style="color: #ffffff;"></i>
-                        <span class="position-absolute  start-f translate-middle badge rounded-pill bg-danger top-f">
-                            ${this.carritoCompra.length}
-                        </span>
-                        `
-        }
-        else
-            btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
+    }
+    //vacia el el carrito tanto en el objeto que lo aloja como en el DOM
+    vaciar_carrito (){
+        this.carritoCompra=[]
+        localStorage.removeItem(`carrito`)
+        contenedorCarrito.innerHTML=""
+        btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
     }
     calcularPrecioTotal(){
         this.carritoCompra.forEach(compra => {
@@ -257,7 +272,8 @@ let productos = new ProductHandler
 productos.listaProductos = productosParseados
 productos.listaFiltrada = productos.listaProductos
 productos.ordenarStock()
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////          DOM          /////////////////////////////////////////////////////////
 
@@ -266,49 +282,30 @@ const contenedorProductos = document.getElementById("contenedorProductos")
 const contenedorCarrito = document.getElementById("contenedorCarrito")
 const btnCarrito = document.getElementById("btnCarrito")
 const vaciarCarrito = document.getElementById(`btnVaciarCarrito`)
+
 //Muestro los productos para comprar
 productos.mostrarProductos()
 //Cargo el archivo JSON guardado en el localstorage y cargo en el DOM el carrito (se visualiza lo cargado si se oprime el boton de carrito)
-productos.carritoCompra = JSON.parse(localStorage.getItem(`carrito`)) || []
+console.log("Cargo carrito de localStorage");
+productos.cargarCarritoDelLocal();
+console.log(productos.carritoCompra);
 productos.mostrarCarrito()
-
 
 ////////////////////EVENTOS/////////////////////////////////////////////////////////////////////////////////
 
 //Evento si toco el menu de talles
 productos.listaProductos.forEach(producto => {
-    
     const menu1 = document.getElementById(`menu1-${producto.id}`)
-    menu1.addEventListener('change',()=>productos.cargarCantidad(producto,menu1))
+    menu1.addEventListener('change',function(){productos.cargarCantidad(producto,menu1)})
 })
-// menu1.addEventListener('change',()=>
-//     {
-//         const menu2 = document.getElementById(`menu2-${producto.id}`)
-//         const cantidadMax = document.getElementById(`cantidadMax-${producto.id}`)
-//         menu2.innerHTML=`<option value="0">Cantidad</option>`
-//         if(menu1.value==0){
-//             menu2.disabled = true
-//             cantidadMax.innerHTML=""
-//         }
-//         else{
-//             menu2.disabled = false
-//             const cantidadStockXTalle = producto.stock[producto.stock.findIndex(obj => obj.talle == menu1.value)].cantidad
-//             for(let i=0;i<cantidadStockXTalle;i++){
-//             menu2.innerHTML +=`<option value="${i+1}">${i+1}</option>`
-//             }
-//             cantidadMax.innerHTML = `(${cantidadStockXTalle})`
-//         }
-//     })
-// })
 
 //Evento si toco un boton de añadir al carrito 
 productos.listaProductos.forEach(producto => {
     const btnAP = document.getElementById(`producto-${producto.id}`)
-    btnAP.addEventListener("click", () => {
+    btnAP.addEventListener("click", function(){
         productos.addCompra(producto)
     })
 })
 
-
-    vaciarCarrito.addEventListener(`click`,productos.vaciar_carrito)
-
+//Evento si toco el boton de vacia carrito
+vaciarCarrito.addEventListener(`click`,function(){productos.vaciar_carrito()})
