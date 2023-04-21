@@ -40,7 +40,7 @@ class ProductHandler {
         this.listaProductos = []
         this.listaFiltrada = []
         this.carritoCompra = []
-        this.precioTotal
+        this.precioTotal = 0
     }
     //Ordena de menor a mayor los stocks de cada producto segun su talle
     ordenarPorTalles() {
@@ -104,6 +104,7 @@ class ProductHandler {
     }
     //Carga las tarjetas en el DOM correpondiente a los productos dentro de carritoCompra, como el icono del boton de carrito y su indicador de cantidad de productos
     mostrarCarrito(){
+        this.calcularPrecioTotal()
         for (let producto of this.carritoCompra) {
             contenedorCarrito.innerHTML += `
             <div class="card mb-3" style="max-width: 540px">
@@ -120,6 +121,7 @@ class ProductHandler {
                 </div>
             </div>`
         }
+        contenedorCarrito.innerHTML += `<p class="precioTotal">Precio Total: <strong>$${this.precioTotal} </strong> </p>`
         //Muestro el icono de cantidad de elementos del carrito
         if (this.carritoCompra.length > 0) {
             btnCarrito.innerHTML = `
@@ -206,6 +208,12 @@ class ProductHandler {
         }
         else
             btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
+    }
+    calcularPrecioTotal(){
+        this.carritoCompra.forEach(compra => {
+            this.precioTotal= this.precioTotal + (compra.precio * compra.cantidad)
+        })
+
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -69,3 +69,14 @@ body {
     padding: 0px;
     margin: 0px;
 }
+
+.precioTotal{
+    text-align: end;
+    height: 30px;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.precioTotal strong{
+    color: tomato;
+}
