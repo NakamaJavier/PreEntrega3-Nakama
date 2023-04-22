@@ -225,6 +225,8 @@ class ProductHandler {
         btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
     }
     calcularPrecioTotal(){
+        this.precioTotal=0
+        console.log(this.carritoCompra);
         this.carritoCompra.forEach(compra => {
             this.precioTotal= this.precioTotal + (compra.precio * compra.cantidad)
         })
