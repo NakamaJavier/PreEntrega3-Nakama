@@ -54,9 +54,12 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header justify-content-between">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Carrito</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="d-flex">
+                        <button type="button" id="btnVaciarCarrito" class="btn btn-light border-primary me-3" data-bs-dismiss="modal">Vaciar Carrito</button> <!--BOTON PARA VACIAR CARRITO (vaciarCarrito) -->
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
                 </div>
                 <div class="modal-body">
                     <div class="d-flex flex-column" id="contenedorCarrito">
@@ -64,7 +67,6 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-around">
-                    <button type="button" id="btnVaciarCarrito" class="btn btn-warning" data-bs-dismiss="modal">Vaciar Carrito</button> <!--BOTON PARA VACIAR CARRITO (vaciarCarrito) -->
                     <button type="button" id="" class="btn btn-primary" data-bs-dismiss="modal">Seguir comprando</button>         <!--BOTON PARA SEGUIR COMPRANDO -->
                     <button type="button" id="finalizarCompra" class="btn btn-success">Finalizar Compra</button>                   <!--BOTON PARA FINALIZAR LA COMPRA (finalizarCompra)-->
                 </div>
@@ -72,6 +74,8 @@
         </div>
     </div>
     <footer class="bg-light text-center text-lg-start" data-bs-theme="dark">
+        
+        
         <div class="text-center p-2 bg-primary" style="background-color: #06395e;">
             <p>© 2023 Copyright: Javier Nakama</p>
         </div>

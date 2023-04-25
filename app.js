@@ -82,6 +82,7 @@ class ProductHandler {
                 opciones1 +=`<option value="${stock.talle}">${stock.talle}</option>
                 `
             }
+            console.log(typeof producto.id);
             contenedorProductos.innerHTML += `
             <div class="card cardHover" style="width: 20rem;">
                 <img src=${producto.img} class="card-img-top" alt="...">
@@ -110,20 +111,45 @@ class ProductHandler {
     //Carga las tarjetas en el DOM correpondiente a los productos dentro de carritoCompra, como el icono del boton de carrito y su indicador de cantidad de productos
     mostrarCarrito(){
         console.log("mostrarCarrito(");
+        console.log(this.carritoCompra);
         this.calcularPrecioTotal()
         contenedorCarrito.innerHTML=""
         //Creo una tarjeta por cada elemento almacenado en carritoCompra
         for (let producto of this.carritoCompra) {
             contenedorCarrito.innerHTML += `
-            <div class="card mb-3" style="max-width: 540px">
+            <div class="cardCarrito mb-3" style="max-width: 540px">
                 <dic class="row g-0">
                     <div class="col-md-7">
                         <img src=${producto.img} class="card-img-top" alt="...">
                     </div>
                     <div class="col-md-5">
-                        <div class="card-body d-flex flex-column align-items-center justify-content-evenly cardPad">
-                            <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
-                            <p class="card-text ml8px"><strong>Talle:</strong> ${producto.talle}<br><strong>Cantidad:</strong> ${producto.cantidad} <br> <strong>Precio:</strong> $${producto.precio}</p>
+                        <div class="card-body d-flex flex-column justify-content-start cardPad">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h4 class="card-title "><strong>${producto.nombre}</strong></h4>
+                                <button type="button" class="btn trash">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                            <p class="card-text ml8px"><strong>Talle:</strong> ${producto.talle}</p>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <p><strong>Cantidad:</strong></p>
+                                <div class="center">
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button id="btn-sub-prod${producto.id}" type="button" class="btn btn-sub btn-danger btn-number" data-type="minus" data-field="quant[2]" data-id="${producto.id}">
+                                            <i class="fa-solid fa-minus fa-2xs"></i>
+                                            </button>
+                                        </span>
+                                        <input type="text" name="quant[2]" class="form-control input-number" value="${producto.cantidad}" min="1" max="100">
+                                        <span class="input-group-btn">
+                                            <button id="btn-plus-prod${producto.id}"  type="button" class="btn btn-plus btn-success btn-number" data-type="plus" data-field="quant[2]" data-id="${producto.id}">
+                                            <i class="fa-solid fa-plus fa-2xs"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p> <strong>Precio:</strong> $${producto.precio}</p>
                         </div>
                     </div>
                 </div>
@@ -221,6 +247,24 @@ class ProductHandler {
         })
         console.log(")")
     }
+    //
+    plusCantidad(compra){
+        console.log("plusCantidad");
+        const indexID = this.carritoCompra.findIndex(obj => obj.id == compra.id)
+        console.log(indexID);
+        this.carritoCompra[indexID].cantidad=this.carritoCompra[indexID].cantidad+1
+        console.log(this.carritoCompra);
+        this.mostrarCarrito()
+        localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
+        console.log(")");
+    }
+    subCantidad(compra){
+        console.log("subCantidad");
+        compra.cantidad--
+        this.mostrarCarrito()
+        localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
+        console.log(")");
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////FUNCIONES//////////////////////////////////////////////
@@ -289,7 +333,27 @@ productos.listaProductos.forEach(producto => {
     btnAP.addEventListener("click", function(){
         productos.addCompra(producto)
     })
+    
 })
+
+//
+contenedorCarrito.addEventListener("click", (event) => {
+    if (event.target.matches(".btn-plus")) {
+        const id = event.target.dataset.id;
+        console.log(typeof id);
+        const compra = productos.carritoCompra.find((c) => c.id == id);
+        console.log(compra);
+        productos.plusCantidad(compra);
+        console.log("sumo");
+    }
+
+    if (event.target.matches(".btn-sub")) {
+        const id = event.target.dataset.id;
+        const compra = productos.carritoCompra.find((c) => c.id === id);
+        productos.subCantidad(compra);
+        console.log("resto");
+    }
+});
 
 //Evento si toco el boton de vacia carrito
 vaciarCarrito.addEventListener(`click`,function(){productos.vaciarCarrito()})
