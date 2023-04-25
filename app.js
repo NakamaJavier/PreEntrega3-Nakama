@@ -136,13 +136,13 @@ class ProductHandler {
                                 <div class="center">
                                     <div class="input-group">
                                         <span class="input-group-btn">
-                                            <button id="btn-sub-prod${producto.id}" type="button" class="btn btn-sub btn-danger btn-number" data-type="minus" data-field="quant[2]" data-id="${producto.id}">
+                                            <button type="button" class="btn btn-sub btn-danger btn-number" data-type="minus" data-field="quant[2]" data-id="${producto.id}">
                                             <i class="fa-solid fa-minus fa-2xs"></i>
                                             </button>
                                         </span>
                                         <input type="text" name="quant[2]" class="form-control input-number" value="${producto.cantidad}" min="1" max="100">
                                         <span class="input-group-btn">
-                                            <button id="btn-plus-prod${producto.id}"  type="button" class="btn btn-plus btn-success btn-number" data-type="plus" data-field="quant[2]" data-id="${producto.id}">
+                                            <button type="button" class="btn btn-plus btn-success btn-number" data-type="plus" data-field="quant[2]" data-id="${producto.id}">
                                             <i class="fa-solid fa-plus fa-2xs"></i>
                                             </button>
                                         </span>
@@ -252,7 +252,7 @@ class ProductHandler {
         console.log("plusCantidad");
         const indexID = this.carritoCompra.findIndex(obj => obj.id == compra.id)
         console.log(indexID);
-        this.carritoCompra[indexID].cantidad=this.carritoCompra[indexID].cantidad+1
+        this.carritoCompra[indexID].cantidad++
         console.log(this.carritoCompra);
         this.mostrarCarrito()
         localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
@@ -260,7 +260,10 @@ class ProductHandler {
     }
     subCantidad(compra){
         console.log("subCantidad");
-        compra.cantidad--
+        const indexID = this.carritoCompra.findIndex(obj => obj.id == compra.id)
+        console.log(indexID);
+        this.carritoCompra[indexID].cantidad--
+        console.log(this.carritoCompra);
         this.mostrarCarrito()
         localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
         console.log(")");
@@ -340,7 +343,6 @@ productos.listaProductos.forEach(producto => {
 contenedorCarrito.addEventListener("click", (event) => {
     if (event.target.matches(".btn-plus")) {
         const id = event.target.dataset.id;
-        console.log(typeof id);
         const compra = productos.carritoCompra.find((c) => c.id == id);
         console.log(compra);
         productos.plusCantidad(compra);
@@ -349,7 +351,7 @@ contenedorCarrito.addEventListener("click", (event) => {
 
     if (event.target.matches(".btn-sub")) {
         const id = event.target.dataset.id;
-        const compra = productos.carritoCompra.find((c) => c.id === id);
+        const compra = productos.carritoCompra.find((c) => c.id == id);
         productos.subCantidad(compra);
         console.log("resto");
     }
