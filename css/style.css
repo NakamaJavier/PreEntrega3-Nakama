@@ -11,7 +11,7 @@ body {
 }
 
 .cardHover:hover{
-    scale: 102%;
+    scale: 101%;
 }
 .card img {
     width: 90%;
