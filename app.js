@@ -1,8 +1,6 @@
 //Constantes a elementos del HTML
-const contenedorProductos = document.getElementById("contenedorProductos")
-const contenedorCarrito = document.getElementById("contenedorCarrito")
-const btnCarrito = document.getElementById("btnCarrito")
-const vaciarCarrito = document.getElementById(`btnVaciarCarrito`)
+
+
 /////////Simulacion de obtencion de informacion a partir de un JSON:////////////////////////////////////////
 
 //Creo una instancia de ProductHandler y guardo los objetos antes creados en él
@@ -18,7 +16,7 @@ let productos = new ProductHandler
 productos.listaProductos = productosParseados
 productos.listaFiltrada = productos.listaProductos
 productos.ordenarStock()
-
+productos.crearOpcionesFiltro()
 //////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////          DOM          /////////////////////////////////////////////////////////
 productos.mostrarProductos()
@@ -40,8 +38,8 @@ productos.listaProductos.forEach(producto => {
     btnAP.addEventListener("click", function(){
         productos.addCompra(producto)
     })
-    
 })
+
 
 //Evento si toco los botones para agregar cantidad desde el carrito + y -
 
@@ -70,7 +68,63 @@ contenedorCarrito.addEventListener("click", (event) => {
     }
 })
 
+// //Evento para los inputs de marcas
+productos.marcasDiferentes.forEach(producto => {
+    const fltMarca = document.getElementById(`marca-${producto.nombre}`)
+    fltMarca.addEventListener("click", function(){
+        productos.filtrarProductos(producto)
+    })
+})
 
+//Evento para los inputs de talles
+productos.tallesDiferentes.forEach(producto => {
+    const fltTalle = document.getElementById(`talle-${producto.nombre}`)
+    fltTalle.addEventListener("click", function(){
+        productos.filtrarProductos(producto)
+    })
+})
+
+//Evento para el PriceSlider
+contedorPriceSlider.addEventListener("click", (event) =>{
+    if (event.target.matches("")) {
+        
+    }
+
+})
 
 //Evento si toco el boton de vacia carrito
 vaciarCarrito.addEventListener(`click`,function(){productos.vaciarCarrito()})
+
+//////////Slider hecho con noUiSlider. Configuracion del mismo
+// Inicializar el slider con los valores y opciones necesarias
+const priceSlider = document.getElementById('price-slider');
+noUiSlider.create(priceSlider, {
+    start: [0, 100000],
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 100000
+    }
+});
+
+// Obtener los elementos de entrada de precio mínimo y máximo
+const priceMinInput = document.getElementById('price-min');
+const priceMaxInput = document.getElementById('price-max');
+
+// Escuchar cambios en el slider y actualizar los campos de entrada
+priceSlider.noUiSlider.on('update', function (values, handle) {
+    if (handle === 0) {
+        priceMinInput.value = parseInt(values[handle]);
+    }
+    if (handle === 1) {
+        priceMaxInput.value = parseInt(values[handle]);
+    }
+});
+
+// Escuchar cambios en los campos de entrada y actualizar el slider
+priceMinInput.addEventListener('change', function () {
+    priceSlider.noUiSlider.set([this.value, null]);
+});
+priceMaxInput.addEventListener('change', function () {
+    priceSlider.noUiSlider.set([null, this.value]);
+});

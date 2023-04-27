@@ -1,10 +1,24 @@
 //////////////////DEFINICIONES DE CLASES//////////////////////////////////////////////////////////
+const contenedorProductos = document.getElementById("contenedorProductos")
+const contenedorCarrito = document.getElementById("contenedorCarrito")
+const btnCarrito = document.getElementById("btnCarrito")
+const vaciarCarrito = document.getElementById("btnVaciarCarrito")
+const filtroMarca = document.getElementById("filtroMarca")
+const filtroTalle = document.getElementById("filtroTalle")
+const contedorPriceSlider = document.getElementById("contedorPriceSlider")
+
 
 //Clase para instanciar los objetos para Producto.stock
 class TalleCantidad {
     constructor(talle, cantidad) {
         this.talle = talle
         this.cantidad = cantidad
+    }
+}
+class FiltroObjeto {
+    constructor(nombre, cantidad) {
+    this.nombre = nombre;
+    this.cantidad = cantidad;
     }
 }
 //Clase para instanciar los objetos para ProductHandler.listProducto
@@ -41,6 +55,8 @@ class ProductHandler {
         this.listaFiltrada = []
         this.carritoCompra = []
         this.precioTotal = 0
+        this.marcasDiferentes = []
+        this.tallesDiferentes = []
     }
     /**
      * carga el carrito de compra alojado en el localStorage
@@ -324,6 +340,76 @@ class ProductHandler {
         this.mostrarCarrito()
         localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
         console.log(")");
+    }
+    /**
+     * Crea las opciones para el filtrado de Marca y Talles
+     */
+    crearOpcionesFiltro(){
+        this.listaProductos.forEach((producto) => {
+            const marca = producto.marca;
+            const marcaEncontrada = this.marcasDiferentes.find((marcaDiferente) => marcaDiferente.nombre === marca);
+            if (marcaEncontrada) {
+                marcaEncontrada.cantidad++;
+            } 
+            else {
+                const marcaObj = new FiltroObjeto(marca, 1);
+                this.marcasDiferentes.push(marcaObj);
+            }
+        })
+        this.listaProductos.forEach((producto) => {
+            producto.stock.forEach((stock) => {
+                const talle = stock.talle;
+                const talleEncontrado = this.tallesDiferentes.find((talleDiferente) => talleDiferente.nombre ===talle)
+                if (talleEncontrado) {
+                    talleEncontrado.cantidad++;
+                } 
+                else {
+                    const talleObj = new FiltroObjeto(talle, 1);
+                    this.tallesDiferentes.push(talleObj);
+                }
+            })
+        })
+        this.marcasDiferentes.sort((marcaA, marcaB) => marcaA.nombre.localeCompare(marcaB.nombre))
+        this.tallesDiferentes.sort((talleA, talleB) => talleA.nombre - talleB.nombre)
+        filtroMarca.innerHTML=""
+        filtroTalle.innerHTML=""
+        this.marcasDiferentes.forEach(marca => {
+            filtroMarca.innerHTML+= `
+            <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="0" id="marca-${marca.nombre}">
+                    <label class="form-check-label">
+                        <strong>${marca.nombre}</strong> (${marca.cantidad})
+                    </label>
+                </div>
+            `
+        });
+        this.tallesDiferentes.forEach(talle => {
+            filtroTalle.innerHTML+=`
+            <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="0" id="talle-${talle.nombre}">
+                    <label class="form-check-label">
+                        <strong>${talle.nombre}</strong> (${talle.cantidad})
+                    </label>
+                </div>
+            `
+        })
+
+    }
+    filtrarProductos(filtro){
+        let typeofFiltro
+        if(typeof filtro.nombre==="number")
+            typeofFiltro=`talle-${filtro.nombre}`
+        if(typeof filtro.nombre==="string")
+            typeofFiltro=`marca-${filtro.nombre}`
+        const fltTalle = document.getElementById(typeofFiltro)
+        console.log(typeof fltTalle.value,fltTalle.value);
+        if(fltTalle.value=="0"){
+            fltTalle.value ="1"
+        }
+        else{
+            fltTalle.value ="0"
+        }
+        
     }
 }   
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

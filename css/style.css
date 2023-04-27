@@ -12,6 +12,7 @@ body {
 
 .cardHover:hover{
     scale: 101%;
+    border: 1px solid rgba(0, 0, 255, 0.457);
 }
 .card img {
     width: 90%;
@@ -121,10 +122,108 @@ body {
 }
 
 .filter-bar{
-    width: auto;
-    height: 100vh;
-    margin-left: 0px;
+    min-width: 200px;
+    margin-left: 10px;
     margin-top: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.192);
+}
+
+/* Propiedades del sidebar */
+
+.sidebar {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: .25rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+.sidebar h4 {
+margin-top: 0;
+}
+
+.sidebar h5 {
+margin-top: 1rem;
+font-size: 18px;
+}
+
+.sidebar hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-top-width: 1px;
+    border-top-color: #000000b9;
+}
+
+.sidebar .form-check-input {
+margin-right: .5rem;
+margin-top: .25rem;
+}
+
+.sidebar .form-check-label{
+    font-weight:lighter;
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+.sidebar .form-check-label strong{
+    font-weight:600;
+}
+.sidebar .form-range::-webkit-slider-thumb {
+appearance: none;
+width: 1rem;
+height: 1rem;
+background-color: #007bff;
+border-radius: 50%;
+cursor: pointer;
+}
+
+.sidebar .form-range::-moz-range-thumb {
+width: 1rem;
+height: 1rem;
+background-color: #007bff;
+border-radius: 50%;
+cursor: pointer;
+}
+.sidebar .form-control{
+    padding: 0.2rem 0.2rem
+}
+
+.sidebar .form-range::-ms-thumb {
+width: 1rem;
+height: 1rem;
+background-color: #007bff;
+border-radius: 50%;
+cursor: pointer;
 }
 
 
+/* Propiedades del input range del Precio */
+.slider-styled,
+.slider-styled .noUi-handle {
+    box-shadow: none;
+}
+
+/* Hide markers on slider handles */
+.slider-styled .noUi-handle::before,
+.slider-styled .noUi-handle::after {
+    display: none;
+}
+
+#price-slider {
+    height: 10px;
+}
+
+#price-slider .noUi-connect {
+    background: #2300ec;
+}
+
+#price-slider .noUi-handle {
+    height: 14px;
+    width: 14px;
+    top: -2.5px;
+    right: -7px; /* half the width */
+    border-radius: 7px;
+}
+
+#price-min,
+#price-max{
+    font-size: 10px;
+}
