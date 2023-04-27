@@ -119,3 +119,12 @@ body {
 .cardPad p{
     margin: 0px;
 }
+
+.filter-bar{
+    width: auto;
+    height: 100vh;
+    margin-left: 0px;
+    margin-top: 20px;
+}
+
+

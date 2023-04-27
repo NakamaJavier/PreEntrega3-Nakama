@@ -14,30 +14,24 @@
 
     <link rel="stylesheet" href="./css/style.css">
     <title>E-Commerce</title>
+    
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary" data-bs-theme="dark"
             style="background-color: #06395e;">
+
+            
             <div class="container-fluid">
-                <a class="navbar-brand" href="./index.html">VarShoes</a>
+                <a class="navbar-brand" href="./index.html">VarShoes</a>             
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <!-- <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Features</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Pricing</a>
-                        </li> -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">  
                     </ul>
                     <!-- Button trigger modal -->
                     <button id="btnCarrito" type="button" class="btn cart" data-bs-toggle="modal" data-bs-target="#exampleModal"> <!--BOTON DEL CARRITO(btnCarrito) -->
@@ -47,10 +41,36 @@
         </nav>
     </header>
     <main>
-        <section id="contenedorProductos" class="contenedor d-flex flex-wrap justify-content-center gap-3 ">
+        <div class="d-flex align-items-start justify-content-start">
+            <section class="filter-bar">
+                <!-- Sidebar  -->
+                <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <span class="navbar-brand  h1">Filtra tu busqueda por:</span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="nav-item">
+                            <span class="nav-link" href="#">Marca</span>
+                        </li>
+                        <li class="nav-item">
+                            <span class="nav-link" href="#">Talle</span>
+                        </li>
+                        <li class="nav-item">
+                            <span class="nav-link">Precio</span>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+        <section id="contenedorProductos" class="contenedor d-flex justify-content-start flex-wrap  gap-3 ">
             <!-- ACA VAN LOS PRODUCTOS MOSTRADOS PARA VENDER (contenedorProductos) -->
         </section>
+        </div>
     </main>
+        
+
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
