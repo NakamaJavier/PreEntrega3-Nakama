@@ -19,6 +19,7 @@ class FiltroObjeto {
     constructor(nombre, cantidad) {
     this.nombre = nombre;
     this.cantidad = cantidad;
+    this.filtrado = false;
     }
 }
 //Clase para instanciar los objetos para ProductHandler.listProducto
@@ -102,6 +103,7 @@ class ProductHandler {
      */
     mostrarProductos(){
         console.log("mostrarProductos(");
+        contenedorProductos.innerHTML =""
         for (let producto of this.listaFiltrada) {
             let opciones1
             //Creo las opciones del menu1 (talles)
@@ -345,7 +347,7 @@ class ProductHandler {
      * Crea las opciones para el filtrado de Marca y Talles
      */
     crearOpcionesFiltro(){
-        this.listaProductos.forEach((producto) => {
+        this.listaFiltrada.forEach((producto) => {
             const marca = producto.marca;
             const marcaEncontrada = this.marcasDiferentes.find((marcaDiferente) => marcaDiferente.nombre === marca);
             if (marcaEncontrada) {
@@ -356,7 +358,7 @@ class ProductHandler {
                 this.marcasDiferentes.push(marcaObj);
             }
         })
-        this.listaProductos.forEach((producto) => {
+        this.listaFiltrada.forEach((producto) => {
             producto.stock.forEach((stock) => {
                 const talle = stock.talle;
                 const talleEncontrado = this.tallesDiferentes.find((talleDiferente) => talleDiferente.nombre ===talle)
@@ -395,21 +397,50 @@ class ProductHandler {
         })
 
     }
-    filtrarProductos(filtro){
+    /**
+     * Genera la tabla que determina que elemento estan activos para realizar el filtrado
+     */
+    generarTablaFiltrado(filtro){
         let typeofFiltro
-        if(typeof filtro.nombre==="number")
+        let xDiferentes
+        if(typeof filtro.nombre==="number"){
             typeofFiltro=`talle-${filtro.nombre}`
-        if(typeof filtro.nombre==="string")
+            xDiferentes=this.tallesDiferentes
+        }
+        if(typeof filtro.nombre==="string"){
             typeofFiltro=`marca-${filtro.nombre}`
+            xDiferentes=this.marcasDiferentes
+        }
         const fltTalle = document.getElementById(typeofFiltro)
-        console.log(typeof fltTalle.value,fltTalle.value);
         if(fltTalle.value=="0"){
             fltTalle.value ="1"
+            xDiferentes[xDiferentes.findIndex(obj=>obj.nombre==filtro.nombre)].filtrado= true
         }
         else{
             fltTalle.value ="0"
+            xDiferentes[xDiferentes.findIndex(obj=>obj.nombre==filtro.nombre)].filtrado= false
         }
         
+    }
+    /**
+    * Filtra los productos segun los valores seleccionados en la botonera de filtros
+    */
+    filtrarSegunTabla(filtro){
+        this.generarTablaFiltrado(filtro)
+        this.listaFiltrada=this.listaProductos
+        this.listaFiltrada= this.listaProductos.filter(producto=>{
+            return this.marcasDiferentes.some(marca=>{
+                if(marca.filtrado==true){
+                    if(marca.nombre==producto.marca)
+                        return true
+                }
+            })
+        })
+        const filtroVacio = this.marcasDiferentes.every(marca =>!marca.filtrado)
+        if(filtroVacio){
+            this.listaFiltrada=this.listaProductos
+        }
+        this.mostrarProductos()
     }
 }   
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

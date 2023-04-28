@@ -69,18 +69,18 @@ contenedorCarrito.addEventListener("click", (event) => {
 })
 
 // //Evento para los inputs de marcas
-productos.marcasDiferentes.forEach(producto => {
-    const fltMarca = document.getElementById(`marca-${producto.nombre}`)
+productos.marcasDiferentes.forEach(marca => {
+    const fltMarca = document.getElementById(`marca-${marca.nombre}`)
     fltMarca.addEventListener("click", function(){
-        productos.filtrarProductos(producto)
+        productos.filtrarSegunTabla(marca)
     })
 })
 
 //Evento para los inputs de talles
-productos.tallesDiferentes.forEach(producto => {
-    const fltTalle = document.getElementById(`talle-${producto.nombre}`)
+productos.tallesDiferentes.forEach(talle => {
+    const fltTalle = document.getElementById(`talle-${talle.nombre}`)
     fltTalle.addEventListener("click", function(){
-        productos.filtrarProductos(producto)
+        productos.filtrarSegunTabla(talle)
     })
 })
 
