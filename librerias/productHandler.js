@@ -6,6 +6,7 @@ const vaciarCarrito = document.getElementById("btnVaciarCarrito")
 const filtroMarca = document.getElementById("filtroMarca")
 const filtroTalle = document.getElementById("filtroTalle")
 const contedorPriceSlider = document.getElementById("contedorPriceSlider")
+const filterbar = document.querySelector(".filter-bar")
 
 
 //Clase para instanciar los objetos para Producto.stock
@@ -118,9 +119,9 @@ class ProductHandler {
                     <h4 class="card-title"><strong>${producto.nombre}</strong></h4>
                     <p class="card-text ml8px"><strong>Marca:</strong> ${producto.marca} <br> <strong>Precio:</strong> $${producto.precio}</p>
                     <div class="text-center">
-                        <a href="#" id="producto-${producto.id}" class="btn btn-primary">Añadir <i class="fa-solid fa-cart-plus"></i> </a>
+                        <a href="#" id="producto-${producto.id}"  data-id="${producto.id}" class="btn btn-primary btnAdd">Añadir <i class="fa-solid fa-cart-plus"></i> </a>
                         <div class="menues">
-                            <select class="menu1" id="menu1-${producto.id}">
+                            <select class="menu1" id="menu1-${producto.id}" data-id="${producto.id}">
                                 <option value="0">Talle</option>
                                 ${opciones1}
                             </select>
@@ -215,13 +216,13 @@ class ProductHandler {
         const menu2 = document.getElementById(`menu2-${producto.id}`)
         const cantidadMax = document.getElementById(`cantidadMax-${producto.id}`)
         menu2.innerHTML=`<option value="0">Cantidad</option>`
-        if(menu1.value==0){
+        if(menu1==0){
             menu2.disabled = true
             cantidadMax.innerHTML=""
         }
         else{
             menu2.disabled = false
-            const cantidadStockXTalle = producto.stock[producto.stock.findIndex(obj => obj.talle == menu1.value)].cantidad
+            const cantidadStockXTalle = producto.stock[producto.stock.findIndex(obj => obj.talle == menu1)].cantidad
             for(let i=0;i<cantidadStockXTalle;i++){
             menu2.innerHTML +=`<option value="${i+1}">${i+1}</option>`
             }
@@ -378,7 +379,7 @@ class ProductHandler {
         this.marcasDiferentes.forEach(marca => {
             filtroMarca.innerHTML+= `
             <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="0" id="marca-${marca.nombre}">
+                    <input class="form-check-input marca-box" type="checkbox" value="0" data-id="${marca.nombre}" id="marca-${marca.nombre}">
                     <label class="form-check-label">
                         <strong>${marca.nombre}</strong> (${marca.cantidad})
                     </label>
@@ -388,7 +389,7 @@ class ProductHandler {
         this.tallesDiferentes.forEach(talle => {
             filtroTalle.innerHTML+=`
             <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="0" id="talle-${talle.nombre}">
+                    <input class="form-check-input talle-box" type="checkbox" value="0" data-id="${talle.nombre}" id="talle-${talle.nombre}">
                     <label class="form-check-label">
                         <strong>${talle.nombre}</strong> (${talle.cantidad})
                     </label>
@@ -404,10 +405,12 @@ class ProductHandler {
         let typeofFiltro
         let xDiferentes
         if(typeof filtro.nombre==="number"){
+            console.log("es un numero");
             typeofFiltro=`talle-${filtro.nombre}`
             xDiferentes=this.tallesDiferentes
         }
         if(typeof filtro.nombre==="string"){
+            console.log("es un string");
             typeofFiltro=`marca-${filtro.nombre}`
             xDiferentes=this.marcasDiferentes
         }

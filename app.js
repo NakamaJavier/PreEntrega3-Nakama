@@ -26,19 +26,33 @@ productos.mostrarCarrito()
 ////////////////////EVENTOS/////////////////////////////////////////////////////////////////////////////////
 
 //Evento si toco el menu de talles
-productos.listaProductos.forEach(producto => {
-    const menu1 = document.getElementById(`menu1-${producto.id}`)
-    menu1.addEventListener('change',function(){
-        productos.cargarCantidad(producto,menu1)})
+contenedorProductos.addEventListener("click", (event) => {
+    if (event.target.matches(".menu1")){
+        const id = event.target.getAttribute('data-id')
+        const producto = productos.listaFiltrada.find((c)=> c.id ==id)
+        productos.cargarCantidad(producto,event.target.value)
+    }
+    //Evento si toco un boton de añadir al carrito
+    if (event.target.matches(`.btnAdd`)){
+        console.log("entre");
+        const id = event.target.getAttribute('data-id')
+        const producto = productos.listaFiltrada.find((c)=> c.id ==id)
+        productos.addCompra(producto)
+    }
 })
+// productos.listaProductos.forEach(producto => {
+//     const menu1 = document.getElementById(`menu1-${producto.id}`)
+//     menu1.addEventListener('change',function(){
+//         productos.cargarCantidad(producto,menu1)})
+// })
 
 //Evento si toco un boton de añadir al carrito 
-productos.listaProductos.forEach(producto => {
-    const btnAP = document.getElementById(`producto-${producto.id}`)
-    btnAP.addEventListener("click", function(){
-        productos.addCompra(producto)
-    })
-})
+// productos.listaProductos.forEach(producto => {
+//     const btnAP = document.getElementById(`producto-${producto.id}`)
+//     btnAP.addEventListener("click", function(){
+//         productos.addCompra(producto)
+//     })
+// })
 
 
 //Evento si toco los botones para agregar cantidad desde el carrito + y -
@@ -56,41 +70,39 @@ contenedorCarrito.addEventListener("click", (event) => {
     }
 
     if (event.target.matches(".btn-sub, .fa-minus")) {
-        const id = event.target.getAttribute('data-id')
+        const id = event.target.getAttribute("data-id")
         const compra = productos.carritoCompra.find((c) => c.id == id)
         productos.subCantidad(compra)
     }
 
     if (event.target.matches(".btn-trash .fa-trash")){
-        const id = event.target.getAttribute('data-id')
+        const id = event.target.getAttribute("data-id")
         const compra = productos.carritoCompra.find((c) => c.id == id)
         productos.eliminarCompra(compra)
     }
 })
 
-// //Evento para los inputs de marcas
-productos.marcasDiferentes.forEach(marca => {
-    const fltMarca = document.getElementById(`marca-${marca.nombre}`)
-    fltMarca.addEventListener("click", function(){
+filterbar.addEventListener("click", (event) => {
+    //Evento para los inputs de marcas
+    if (event.target.matches(".marca-box")){
+        const id = event.target.getAttribute("data-id")
+        const marca = productos.marcasDiferentes.find((c)=> c.nombre == id)
         productos.filtrarSegunTabla(marca)
-    })
-})
-
-//Evento para los inputs de talles
-productos.tallesDiferentes.forEach(talle => {
-    const fltTalle = document.getElementById(`talle-${talle.nombre}`)
-    fltTalle.addEventListener("click", function(){
+    }
+    //Evento para los inputs de talles
+    if (event.target.matches(".talle-box")){
+        const id = event.target.getAttribute("data-id")
+        const talle = productos.tallesDiferentes.find((c)=> c.nombre == id)
         productos.filtrarSegunTabla(talle)
-    })
-})
-
-//Evento para el PriceSlider
-contedorPriceSlider.addEventListener("click", (event) =>{
-    if (event.target.matches("")) {
-        
     }
 
+    // //Evento para el PriceSlider
+    // contedorPriceSlider.addEventListener("click", (event) =>{
+    //     if (event.target.matches("")) {
+    //     }
+    // })
 })
+
 
 //Evento si toco el boton de vacia carrito
 vaciarCarrito.addEventListener(`click`,function(){productos.vaciarCarrito()})
