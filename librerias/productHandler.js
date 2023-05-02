@@ -59,6 +59,7 @@ class ProductHandler {
         this.precioTotal = 0
         this.marcasDiferentes = []
         this.tallesDiferentes = []
+        this.primerFiltro = 0
     }
     /**
      * carga el carrito de compra alojado en el localStorage
@@ -347,10 +348,42 @@ class ProductHandler {
         console.log(")");
     }
     /**
-     * Crea las opciones para el filtrado de Marca y Talles
+     * Crea las listas de filtrado segun talle y marca (tallesDiferentes y marcasDiferentes)
      */
-    crearOpcionesFiltro(){
-        this.listaFiltrada.forEach((producto) => {
+    creaListasFiltro(){
+        console.log("creaListasFiltro(");
+        //Reseteo la cantidad de las listas de filtrado
+        this.tallesDiferentes.forEach(talle=>{talle.cantidad=0})
+        this.marcasDiferentes.forEach(marca=>{marca.cantidad=0})
+        //si son todos los checkbox 0
+        if(this.marcasDiferentes.every(marca =>!marca.filtrado)&&this.tallesDiferentes.every(talle=> !talle.filtrado))
+            this.primerFiltro = 0
+        //si los checkbox de marcas estan en 0 y hay alguno activo de talles
+        if(this.marcasDiferentes.every(marca =>!marca.filtrado)&&!this.tallesDiferentes.every(talle=>!talle.filtrado))
+            this.primerFiltro = "talle"
+        //si los checkbox de talles estan en 0 y hay alguno activo de marcas
+        if(!this.marcasDiferentes.every(marca =>!marca.filtrado)&&this.tallesDiferentes.every(talle=> !talle.filtrado))
+            this.primerFiltro = "marca"
+        let listaMarcas
+        let listaTalles
+        switch(this.primerFiltro){
+            case "marca":
+                listaMarcas = this.listaProductos
+                listaTalles = this.listaFiltrada
+            break;
+
+            case "talle":
+                listaMarcas = this.listaFiltrada
+                listaTalles = this.listaProductos
+            break;
+
+            case 0:
+                listaMarcas = this.listaFiltrada
+                listaTalles = this.listaFiltrada
+            break;
+        }
+        //Creo la lista de filtrado por Marca
+        listaMarcas.forEach((producto) => {
             const marca = producto.marca;
             const marcaEncontrada = this.marcasDiferentes.find((marcaDiferente) => marcaDiferente.nombre === marca);
             if (marcaEncontrada) {
@@ -361,7 +394,8 @@ class ProductHandler {
                 this.marcasDiferentes.push(marcaObj);
             }
         })
-        this.listaFiltrada.forEach((producto) => {
+        //Creo la lista de filtrado por Talle
+        listaTalles.forEach((producto) => {
             producto.stock.forEach((stock) => {
                 const talle = stock.talle;
                 const talleEncontrado = this.tallesDiferentes.find((talleDiferente) => talleDiferente.nombre ===talle)
@@ -374,45 +408,63 @@ class ProductHandler {
                 }
             })
         })
+        console.log(")");
+    }
+    /**
+     * Crea las opciones para el filtrado de Marca y Talles
+     */
+    crearOpcionesFiltro(){
+        console.log("crearOpcionesFiltro(");
+        this.creaListasFiltro()
+        //Ordeno las listas y vacio el DOM de las opciones de los filtros
         this.marcasDiferentes.sort((marcaA, marcaB) => marcaA.nombre.localeCompare(marcaB.nombre))
         this.tallesDiferentes.sort((talleA, talleB) => talleA.nombre - talleB.nombre)
         filtroMarca.innerHTML=""
         filtroTalle.innerHTML=""
+        //Genero el DOM de las opciones de filtrado por Marca
         this.marcasDiferentes.forEach(marca => {
+            let filtradoOnOff
+            let checked
+            marca.filtrado==true ?  filtradoOnOff=1 : filtradoOnOff=0
+            marca.filtrado==true ?  checked="checked" : checked=""
             filtroMarca.innerHTML+= `
             <div class="form-check">
-                    <input class="form-check-input marca-box" type="checkbox" value="0" data-id="${marca.nombre}" id="marca-${marca.nombre}">
+                    <input class="form-check-input marca-box" type="checkbox" ${checked} value="${filtradoOnOff}" data-id="${marca.nombre}" id="marca-${marca.nombre}">
                     <label class="form-check-label">
                         <strong>${marca.nombre}</strong> (${marca.cantidad})
                     </label>
                 </div>
             `
         });
+        //Genero el DOM de las opciones de filtrado por Talle
         this.tallesDiferentes.forEach(talle => {
+            let filtradoOnOff
+            let checked
+            talle.filtrado==true ?  filtradoOnOff=1 : filtradoOnOff=0
+            talle.filtrado==true ?  checked="checked" : checked=""
             filtroTalle.innerHTML+=`
             <div class="form-check">
-                    <input class="form-check-input talle-box" type="checkbox" value="0" data-id="${talle.nombre}" id="talle-${talle.nombre}">
+                    <input class="form-check-input talle-box" type="checkbox" ${checked} value="${filtradoOnOff}" data-id="${talle.nombre}" id="talle-${talle.nombre}">
                     <label class="form-check-label">
                         <strong>${talle.nombre}</strong> (${talle.cantidad})
                     </label>
                 </div>
             `
         })
-
+        console.log(")");
     }
     /**
      * Genera la tabla que determina que elemento estan activos para realizar el filtrado
      */
     generarTablaFiltrado(filtro){
+        console.log("generarTablaFiltro(");
         let typeofFiltro
         let xDiferentes
         if(typeof filtro.nombre==="number"){
-            console.log("es un numero");
             typeofFiltro=`talle-${filtro.nombre}`
             xDiferentes=this.tallesDiferentes
         }
         if(typeof filtro.nombre==="string"){
-            console.log("es un string");
             typeofFiltro=`marca-${filtro.nombre}`
             xDiferentes=this.marcasDiferentes
         }
@@ -425,27 +477,50 @@ class ProductHandler {
             fltTalle.value ="0"
             xDiferentes[xDiferentes.findIndex(obj=>obj.nombre==filtro.nombre)].filtrado= false
         }
-        
+        console.log(")");
     }
     /**
     * Filtra los productos segun los valores seleccionados en la botonera de filtros
     */
-    filtrarSegunTabla(filtro){
-        this.generarTablaFiltrado(filtro)
-        this.listaFiltrada=this.listaProductos
-        this.listaFiltrada= this.listaProductos.filter(producto=>{
+    filtrarSegunTabla(){
+        console.log("filtrarSegunTabla(");
+        this.listaFiltrada=[]
+        //Filtra los productos de listaProductos, dejando solo los que poseen 
+        //coincidencia con las marcas cuyo checkbox esta activo y lo almacena dentro de listaFiltrada
+        this.listaProductos.filter(producto=>{
             return this.marcasDiferentes.some(marca=>{
                 if(marca.filtrado==true){
                     if(marca.nombre==producto.marca)
                         return true
                 }
             })
-        })
-        const filtroVacio = this.marcasDiferentes.every(marca =>!marca.filtrado)
+        }).forEach(producto=> {this.listaFiltrada.push(producto)})
+        //en caso de que ningun checkbox de marca este activo hace que listaProductos sea igual a listaFiltrado
+        let filtroVacio = this.marcasDiferentes.every(marca =>!marca.filtrado)
         if(filtroVacio){
             this.listaFiltrada=this.listaProductos
         }
+        //Si se oprimio algun checkbox de talle, filtra los productos dentro
+        //de listaFiltrada que posea alguno de los talles seleccionados dentro de tallesDiferentes 
+        filtroVacio = this.tallesDiferentes.every(talle=> !talle.filtrado)
+        if(!filtroVacio){
+            this.listaFiltrada=this.listaFiltrada.filter(producto=>{
+                return this.tallesDiferentes.some(talle=>{
+                    if(talle.filtrado==true){
+                        if(producto.stock.some(stock=>stock.talle==talle.nombre))
+                            return true
+                    }
+                })
+            })
+        }
+        console.log(priceMinInput.value,priceMaxInput.value);
+        this.listaFiltrada=this.listaFiltrada.filter(producto=>{
+            if(producto.precio>priceMinInput.value&&producto.precio<priceMaxInput.value)
+                return true
+        })
+        this.crearOpcionesFiltro()
         this.mostrarProductos()
+        console.log(")");
     }
 }   
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

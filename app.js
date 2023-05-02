@@ -89,16 +89,18 @@ filterbar.addEventListener("click", (event) => {
     if (event.target.matches(".marca-box")){
         const id = event.target.getAttribute("data-id")
         const marca = productos.marcasDiferentes.find((c)=> c.nombre == id)
-        productos.filtrarSegunTabla(marca)
+        productos.generarTablaFiltrado(marca)
+        productos.filtrarSegunTabla()
     }
     //Evento para los inputs de talles
     if (event.target.matches(".talle-box")){
         const id = event.target.getAttribute("data-id")
         const talle = productos.tallesDiferentes.find((c)=> c.nombre == id)
-        productos.filtrarSegunTabla(talle)
+        productos.generarTablaFiltrado(talle)
+        productos.filtrarSegunTabla()
     }
 
-    // //Evento para el PriceSlider
+    //Evento para el PriceSlider
     // contedorPriceSlider.addEventListener("click", (event) =>{
     //     if (event.target.matches("")) {
     //     }
@@ -133,12 +135,15 @@ priceSlider.noUiSlider.on('update', function (values, handle) {
     if (handle === 1) {
         priceMaxInput.value = parseInt(values[handle]);
     }
+    productos.filtrarSegunTabla()
 });
 
 // Escuchar cambios en los campos de entrada y actualizar el slider
 priceMinInput.addEventListener('change', function () {
-    priceSlider.noUiSlider.set([this.value, null]);
+    priceSlider.noUiSlider.set([this.value, null])
+    productos.filtrarSegunTabla();
 });
 priceMaxInput.addEventListener('change', function () {
-    priceSlider.noUiSlider.set([null, this.value]);
+    priceSlider.noUiSlider.set([null, this.value])
+    productos.filtrarSegunTabla();
 });
