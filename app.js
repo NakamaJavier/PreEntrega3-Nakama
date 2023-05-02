@@ -34,7 +34,6 @@ contenedorProductos.addEventListener("click", (event) => {
     }
     //Evento si toco un boton de añadir al carrito
     if (event.target.matches(`.btnAdd`)){
-        console.log("entre");
         const id = event.target.getAttribute('data-id')
         const producto = productos.listaFiltrada.find((c)=> c.id ==id)
         productos.addCompra(producto)
@@ -65,19 +64,22 @@ contenedorProductos.addEventListener("click", (event) => {
 contenedorCarrito.addEventListener("click", (event) => {
     if (event.target.matches(".btn-plus, .fa-plus")) {
         const id = event.target.getAttribute('data-id');
-        const compra = productos.carritoCompra.find((c) => c.id == id)
+        const talle = event.target.getAttribute("data-talle")
+        const compra = productos.carritoCompra.find((c) => c.id == id && c.talle == talle)
         productos.plusCantidad(compra)
     }
 
     if (event.target.matches(".btn-sub, .fa-minus")) {
         const id = event.target.getAttribute("data-id")
-        const compra = productos.carritoCompra.find((c) => c.id == id)
+        const talle = event.target.getAttribute("data-talle")
+        const compra = productos.carritoCompra.find((c) => c.id == id && c.talle == talle)
         productos.subCantidad(compra)
     }
 
     if (event.target.matches(".btn-trash .fa-trash")){
         const id = event.target.getAttribute("data-id")
-        const compra = productos.carritoCompra.find((c) => c.id == id)
+        const talle = event.target.getAttribute("data-talle")
+        const compra = productos.carritoCompra.find((c) => c.id == id && c.talle == talle)
         productos.eliminarCompra(compra)
     }
 })

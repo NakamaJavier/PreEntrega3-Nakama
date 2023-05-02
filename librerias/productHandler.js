@@ -156,8 +156,8 @@ class ProductHandler {
                         <div class="card-body d-flex flex-column justify-content-start cardPad">
                             <div class="d-flex justify-content-between align-items-start">
                                 <h4 class="card-title "><strong>${producto.nombre}</strong></h4>
-                                <button type="button" class="btn btn-trash" data-id="${producto.id}">
-                                    <i class="fa-solid fa-trash" data-id="${producto.id}"></i>
+                                <button type="button" class="btn btn-trash" data-id="${producto.id}" data-talle="${producto.talle}">
+                                    <i class="fa-solid fa-trash" data-id="${producto.id}" data-talle="${producto.talle}"></i>
                                 </button>
                             </div>
                             <p class="card-text ml8px"><strong>Talle:</strong> ${producto.talle}</p>
@@ -166,14 +166,14 @@ class ProductHandler {
                                 <div class="center">
                                     <div class="input-group">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-sub btn-danger btn-number" data-type="minus" " data-id="${producto.id}">
-                                                <i class="fa-solid fa-minus fa-2xs" data-id="${producto.id}"></i>
+                                            <button type="button" class="btn btn-sub btn-danger btn-number" data-type="minus" " data-id="${producto.id}" data-talle="${producto.talle}">
+                                                <i class="fa-solid fa-minus fa-2xs" data-id="${producto.id}" data-talle="${producto.talle}"></i>
                                             </button>
                                         </span>
                                         <input type="text" name="quant[2]" class="form-control input-number" value="${producto.cantidad}" min="1" max="100">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-plus btn-success btn-number" data-type="plus" data-id="${producto.id}">
-                                                <i class="fa-solid fa-plus fa-2xs" data-id="${producto.id}"></i>
+                                            <button type="button" class="btn btn-plus btn-success btn-number" data-type="plus" data-id="${producto.id}" data-talle="${producto.talle}">
+                                                <i class="fa-solid fa-plus fa-2xs" data-id="${producto.id}" data-talle="${producto.talle}"></i>
                                             </button>
                                         </span>
                                     </div>
@@ -296,7 +296,9 @@ class ProductHandler {
      */
     plusCantidad(compra){
         console.log("plusCantidad(");
-        const indexId = this.carritoCompra.findIndex(obj => obj.id == compra.id)
+        console.log(compra);
+        const indexId = this.carritoCompra.findIndex(obj => obj.id == compra.id && obj.talle==compra.talle)
+        console.log(indexId);
         const producto = this.listaProductos.find(p => p.id === compra.id);
         const stock = producto.stock.find(s => s.talle === compra.talle);
         const stockCantidad = stock.cantidad
@@ -318,7 +320,7 @@ class ProductHandler {
      */
     subCantidad(compra){
         console.log("subCantidad(");
-        const indexID = this.carritoCompra.findIndex(obj => obj.id == compra.id)
+        const indexID = this.carritoCompra.findIndex(obj => obj.id == compra.id && obj.talle == compra.talle)
         if (indexID === -1) {
             console.log("El producto no existe en el carrito de compras");
         } 
@@ -338,7 +340,7 @@ class ProductHandler {
      */
     eliminarCompra(compra){
         console.log("eliminarCompra(");
-        const indexID = this.carritoCompra.findIndex(obj=>obj.id==compra.id)
+        const indexID = this.carritoCompra.findIndex(obj=>obj.id==compra.id && obj.talle == compra.talle)
         this.carritoCompra.splice(indexID,1)
         this.mostrarCarrito()
         localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
