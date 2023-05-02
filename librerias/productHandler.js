@@ -7,7 +7,8 @@ const filtroMarca = document.getElementById("filtroMarca")
 const filtroTalle = document.getElementById("filtroTalle")
 const contedorPriceSlider = document.getElementById("contedorPriceSlider")
 const filterbar = document.querySelector(".filter-bar")
-
+const priceMinInput = document.getElementById('price-min');
+const priceMaxInput = document.getElementById('price-max');
 
 //Clase para instanciar los objetos para Producto.stock
 class TalleCantidad {
@@ -366,20 +367,21 @@ class ProductHandler {
             this.primerFiltro = "marca"
         let listaMarcas
         let listaTalles
+        let listaFiltradaPorPrecio = this.listaProductos.filter(producto=>producto.precio>priceMinInput.value && producto.precio<priceMaxInput.value)
         switch(this.primerFiltro){
             case "marca":
-                listaMarcas = this.listaProductos
+                listaMarcas = listaFiltradaPorPrecio
                 listaTalles = this.listaFiltrada
             break;
 
             case "talle":
                 listaMarcas = this.listaFiltrada
-                listaTalles = this.listaProductos
+                listaTalles = listaFiltradaPorPrecio
             break;
 
             case 0:
-                listaMarcas = this.listaFiltrada
-                listaTalles = this.listaFiltrada
+                listaMarcas = listaFiltradaPorPrecio
+                listaTalles = listaFiltradaPorPrecio
             break;
         }
         //Creo la lista de filtrado por Marca
@@ -513,11 +515,11 @@ class ProductHandler {
                 })
             })
         }
-        console.log(priceMinInput.value,priceMaxInput.value);
-        this.listaFiltrada=this.listaFiltrada.filter(producto=>{
-            if(producto.precio>priceMinInput.value&&producto.precio<priceMaxInput.value)
-                return true
-        })
+        // console.log(priceMinInput.value,priceMaxInput.value);
+        // this.listaFiltrada=this.listaFiltrada.filter(producto=>{
+        //     if(producto.precio>priceMinInput.value&&producto.precio<priceMaxInput.value)
+        //         return true
+        // })
         this.crearOpcionesFiltro()
         this.mostrarProductos()
         console.log(")");

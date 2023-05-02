@@ -115,17 +115,15 @@ vaciarCarrito.addEventListener(`click`,function(){productos.vaciarCarrito()})
 // Inicializar el slider con los valores y opciones necesarias
 const priceSlider = document.getElementById('price-slider');
 noUiSlider.create(priceSlider, {
-    start: [0, 100000],
+    start: [0, 60000],
     connect: true,
     range: {
         'min': 0,
-        'max': 100000
+        'max': 60000
     }
 });
 
-// Obtener los elementos de entrada de precio mínimo y máximo
-const priceMinInput = document.getElementById('price-min');
-const priceMaxInput = document.getElementById('price-max');
+
 
 // Escuchar cambios en el slider y actualizar los campos de entrada
 priceSlider.noUiSlider.on('update', function (values, handle) {
