@@ -252,13 +252,29 @@ class ProductHandler {
                 //verifica que la nueva cantidad ingresada mas la anterior almacenada no supera al stock
                 if(this.carritoCompra[indexTalle].cantidad+parseInt(menu2.value)<=cantidadStockXTalle){
                     this.carritoCompra[indexTalle].cantidad += parseInt(menu2.value)
+                    Toastify({
+                        text: "Se actualizó la cantidad del producto",
+                        duration: 1500,
+                        backgroundColor: "green",
+                        newWindow: true,
+                    }).showToast();
                 }
                 else
-                    alert("No hay stock suficiente")
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No se pudo añadir el producto',
+                    text: 'No hay Stock suficiente para la compra que desea realizar',
+                })
             }
             //caso en que el producto que se quiera comprar no se encuentre previamente en carritoCompra
             else{
                 this.carritoCompra.push(compra)
+                Toastify({
+                    text: "Se agregó un nuevo producto",
+                    duration: 1500,
+                    backgroundColor: "green",
+                    newWindow: true,
+                }).showToast();
             }
             //se actuliza el archivo de carrito en el localStorage, y menu1 y 2 se resetean
             localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
@@ -268,6 +284,13 @@ class ProductHandler {
             cantidadMax.innerHTML=""
             this.mostrarCarrito()
         }
+        else{
+            Swal.fire({
+                icon: 'info',
+                title: 'No se pudo añadir el producto',
+                text: 'Debe colocar un talle y una cantidad',
+            })
+        }
         console.log(")")
     }
     /**
@@ -275,10 +298,27 @@ class ProductHandler {
      */
     vaciarCarrito (){
         console.log("vaciar_carrito(");
-        this.carritoCompra=[]
-        localStorage.removeItem(`carrito`)
-        contenedorCarrito.innerHTML=`<p class="precioTotal">Precio Total: <strong>$0 </strong> </p>`
-        btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
+            Swal.fire({
+                title: 'Seguro que desea vaciar el Carrito?',
+                text: "No podrás revertir esta acción",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, vaciar carrito'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.carritoCompra=[]
+                    localStorage.removeItem(`carrito`)
+                    contenedorCarrito.innerHTML=`<p class="precioTotal">Precio Total: <strong>$0 </strong> </p>`
+                    btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
+                    Swal.fire(
+                    'Vaciado!',
+                    'El carrito se ha vaciado',
+                    'success'
+                    )
+                }
+            })
         console.log(")")
     }
     /**
@@ -298,9 +338,7 @@ class ProductHandler {
      */
     plusCantidad(compra){
         console.log("plusCantidad(");
-        console.log(compra);
         const indexId = this.carritoCompra.findIndex(obj => obj.id == compra.id && obj.talle==compra.talle)
-        console.log(indexId);
         const producto = this.listaProductos.find(p => p.id === compra.id);
         const stock = producto.stock.find(s => s.talle === compra.talle);
         const stockCantidad = stock.cantidad
@@ -310,7 +348,11 @@ class ProductHandler {
         else if (this.carritoCompra[indexId].cantidad < stockCantidad) {
             this.carritoCompra[indexId].cantidad++;
         } else {
-            console.log("No hay suficiente stock para agregar una unidad");
+            Swal.fire({
+                icon: 'error',
+                title: 'No se pudo añadir el producto',
+                text: 'No hay Stock suficiente para la compra que desea realizar',
+            });
         }
         this.mostrarCarrito()
         localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
@@ -330,7 +372,11 @@ class ProductHandler {
         this.carritoCompra[indexID].cantidad--
         }
         else{
-            console.log("Para eliminar el producto del carrito toque el boton del tacho de basura");
+            Swal.fire({
+                icon: 'info',
+                title: 'Mínimo alcanzado',
+                text: 'No se puede colocar menos de 1 unidad. Si se desea borrar el producto toque en el ícono del tacho',
+            })
         }
         this.mostrarCarrito()
         localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
@@ -342,10 +388,23 @@ class ProductHandler {
      */
     eliminarCompra(compra){
         console.log("eliminarCompra(");
-        const indexID = this.carritoCompra.findIndex(obj=>obj.id==compra.id && obj.talle == compra.talle)
-        this.carritoCompra.splice(indexID,1)
-        this.mostrarCarrito()
-        localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
+        Swal.fire({
+            title: 'Desea eliminar el producto?',
+            text: "Si confirma el producto se eliminará del carrito",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const indexID = this.carritoCompra.findIndex(obj=>obj.id==compra.id && obj.talle == compra.talle)
+                this.carritoCompra.splice(indexID,1)
+                this.mostrarCarrito()
+                localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
+            }
+        })
+        
         console.log(")");
     }
     /**

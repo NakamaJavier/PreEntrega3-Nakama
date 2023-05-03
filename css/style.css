@@ -116,7 +116,10 @@ body {
     width: 115px;
     scale:53%;
 }
-
+.center .input-group .form-control{
+    font-size: 18px;
+    font-weight: bold;
+}
 .cardPad p{
     margin: 0px;
 }
@@ -227,3 +230,4 @@ cursor: pointer;
 #price-max{
     font-size: 10px;
 }
+
