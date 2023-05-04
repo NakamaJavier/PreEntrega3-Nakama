@@ -575,10 +575,10 @@ class ProductHandler {
             })
         }
         // console.log(priceMinInput.value,priceMaxInput.value);
-        // this.listaFiltrada=this.listaFiltrada.filter(producto=>{
-        //     if(producto.precio>priceMinInput.value&&producto.precio<priceMaxInput.value)
-        //         return true
-        // })
+        this.listaFiltrada=this.listaFiltrada.filter(producto=>{
+            if(producto.precio>priceMinInput.value&&producto.precio<priceMaxInput.value)
+                return true
+        })
         this.crearOpcionesFiltro()
         this.mostrarProductos()
         console.log(")");
