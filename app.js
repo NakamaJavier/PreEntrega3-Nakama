@@ -1,6 +1,3 @@
-//Constantes a elementos del HTML
-
-
 /////////Simulacion de obtencion de informacion a partir de un JSON:////////////////////////////////////////
 
 //Creo una instancia de ProductHandler y guardo los objetos antes creados en él
@@ -9,8 +6,12 @@ productosAJSON.listaProductos = [prod1, prod2, prod3, prod4, prod5, prod6, prod7
 //Creo un JSON a partir de esa informacion
 const productosJson = JSON.stringify(productosAJSON.listaProductos)
 //Simulo la recepcion de un JSON con el contenido de la base de datos del stock de la página
-const productosParseados = JSON.parse(productosJson)
 
+fetch('./productos_bd.json')
+.then(response => log(response))
+    
+const productosParseados = JSON.parse(productosJson)
+console.log(productosJson);
 //Creo el objeto principal del programa que aloja todos los objetos del catalogo y carrito, ademas de los metodos que utilizan dichos atributos.
 let productos = new ProductHandler
 productos.listaProductos = productosParseados
@@ -25,8 +26,9 @@ productos.mostrarCarrito()
 
 ////////////////////EVENTOS/////////////////////////////////////////////////////////////////////////////////
 
-//Evento si toco el menu de talles
+//Eventos para los botones dentro de cada card de producto en el inicio
 contenedorProductos.addEventListener("click", (event) => {
+    //Evento si toco el menu de talles
     if (event.target.matches(".menu1")){
         const id = event.target.getAttribute('data-id')
         const producto = productos.listaFiltrada.find((c)=> c.id ==id)
@@ -39,22 +41,8 @@ contenedorProductos.addEventListener("click", (event) => {
         productos.addCompra(producto)
     }
 })
-// productos.listaProductos.forEach(producto => {
-//     const menu1 = document.getElementById(`menu1-${producto.id}`)
-//     menu1.addEventListener('change',function(){
-//         productos.cargarCantidad(producto,menu1)})
-// })
 
-//Evento si toco un boton de añadir al carrito 
-// productos.listaProductos.forEach(producto => {
-//     const btnAP = document.getElementById(`producto-${producto.id}`)
-//     btnAP.addEventListener("click", function(){
-//         productos.addCompra(producto)
-//     })
-// })
-
-
-//Evento si toco los botones para agregar cantidad desde el carrito + y -
+//Evento si toco los botones dentro las card de productos del carrito
 
 //NOTA: se hizo asi porque al reehacer el DOM del modal del carrito, los elementos
 //de los botones se volvian a crear y los eventos relacionados a estos quedaban obsoletos
@@ -62,20 +50,21 @@ contenedorProductos.addEventListener("click", (event) => {
 //a lo largo del uso de la pagina. Y se ajustaron las clases para que tome el evento en el
 //boton y el icono que estaba como elemento dentro de él
 contenedorCarrito.addEventListener("click", (event) => {
+    //Evento si toco el +
     if (event.target.matches(".btn-plus, .fa-plus")) {
         const id = event.target.getAttribute('data-id');
         const talle = event.target.getAttribute("data-talle")
         const compra = productos.carritoCompra.find((c) => c.id == id && c.talle == talle)
         productos.plusCantidad(compra)
     }
-
+    //Evento si toco el -
     if (event.target.matches(".btn-sub, .fa-minus")) {
         const id = event.target.getAttribute("data-id")
         const talle = event.target.getAttribute("data-talle")
         const compra = productos.carritoCompra.find((c) => c.id == id && c.talle == talle)
         productos.subCantidad(compra)
     }
-
+    //Evento si toco el boton del tacho de basura
     if (event.target.matches(".btn-trash .fa-trash")){
         const id = event.target.getAttribute("data-id")
         const talle = event.target.getAttribute("data-talle")
@@ -99,16 +88,9 @@ filterbar.addEventListener("click", (event) => {
         productos.generarTablaFiltrado(talle)
         productos.filtrarSegunTabla()
     }
-
-    //Evento para el PriceSlider
-    // contedorPriceSlider.addEventListener("click", (event) =>{
-    //     if (event.target.matches("")) {
-    //     }
-    // })
 })
 
-
-//Evento si toco el boton de vacia carrito
+//Evento si toco el boton de vaciar carrito
 vaciarCarrito.addEventListener(`click`,function(){productos.vaciarCarrito()})
 
 //////////Slider hecho con noUiSlider. Configuracion del mismo
@@ -122,8 +104,6 @@ noUiSlider.create(priceSlider, {
         'max': 60000
     }
 });
-
-
 
 // Escuchar cambios en el slider y actualizar los campos de entrada
 priceSlider.noUiSlider.on('update', function (values, handle) {

@@ -1,0 +1,22 @@
+[
+    {"id":15,"nombre":"AirMax Excee","img":"./img/AirMaxExcee.png","marca":"Nike","stock":[{"talle":39,"cantidad":10},{"talle":40,"cantidad":5},{"talle":41,"cantidad":6},{"talle":42,"cantidad":7}],"precio":49000},
+    {"id":2,"nombre":"Legend Essential","img":"./img/LegendEssencial.png","marca":"Nike","stock":[{"talle":38,"cantidad":1},{"talle":39,"cantidad":5},{"talle":41,"cantidad":8},{"talle":42,"cantidad":10},{"talle":43,"cantidad":4}],"precio":31200},
+    {"id":3,"nombre":"Downshifter","img":"./img/DownShifter.png","marca":"Nike","stock":[{"talle":39,"cantidad":3},{"talle":40,"cantidad":4},{"talle":41,"cantidad":1}],"precio":30800},
+    {"id":4,"nombre":"Revolution 6 Next Nature","img":"./img/revolution6NextNature.png","marca":"Nike","stock":[{"talle":40,"cantidad":9},{"talle":42,"cantidad":10}],"precio":27000},
+    {"id":18,"nombre":"Waffle Debut","img":"./img/waffleDebut.png","marca":"Nike","stock":[{"talle":38,"cantidad":1},{"talle":40,"cantidad":5},{"talle":42,"cantidad":6},{"talle":44,"cantidad":3}],"precio":28000},
+    {"id":6,"nombre":"Royal Glide","img":"./img/royalGlide.png","marca":"Reebok","stock":[{"talle":39,"cantidad":5},{"talle":42,"cantidad":3},{"talle":43,"cantidad":2}],"precio":22700},
+    {"id":7,"nombre":"Flexagon Energy Train","img":"./img/flexagonEnergyTrain.png","marca":"Reebok","stock":[{"talle":40,"cantidad":10},{"talle":42,"cantidad":8},{"talle":41,"cantidad":6},{"talle":43,"cantidad":5}],"precio":18000},
+    {"id":10,"nombre":"Energylux 3.0","img":"./img/energylux3.png","marca":"Reebok","stock":[{"talle":39,"cantidad":3},{"talle":40,"cantidad":0}],"precio":21000},
+    {"id":9,"nombre":"Royal Techque","img":"./img/royalTechque.png","marca":"Reebok","stock":[{"talle":35,"cantidad":8},{"talle":36,"cantidad":5},{"talle":37,"cantidad":6}],"precio":23700},
+    {"id":8,"nombre":"Court Royale 2","img":"./img/courtRoyal2.png","marca":"Nike","stock":[{"talle":38,"cantidad":1},{"talle":39,"cantidad":6},{"talle":41,"cantidad":5},{"talle":40,"cantidad":3},{"talle":42,"cantidad":8}],"precio":27600},
+    {"id":11,"nombre":"Terrex Ax4 Gtx","img":"./img/terrexAx4Gtx.png","marca":"Adidas","stock":[{"talle":38,"cantidad":10},{"talle":42,"cantidad":10},{"talle":40,"cantidad":10}],"precio":55000},
+    {"id":12,"nombre":"Grand Court","img":"./img/grandcourt.png","marca":"Adidas","stock":[{"talle":38,"cantidad":3},{"talle":39,"cantidad":2},{"talle":40,"cantidad":0}],"precio":26000},
+    {"id":13,"nombre":"Runfalcon 2.0","img":"./img/falcon2.png","marca":"Adidas","stock":[{"talle":40,"cantidad":2},{"talle":41,"cantidad":1},{"talle":42,"cantidad":5}],"precio":18000},
+    {"id":14,"nombre":"Ultraboost 22","img":"./img/ultraboost22.png","marca":"Adidas","stock":[{"talle":38,"cantidad":4},{"talle":39,"cantidad":2},{"talle":40,"cantidad":1},{"talle":41,"cantidad":3},{"talle":42,"cantidad":4},{"talle":43,"cantidad":5}],"precio":58000},
+    {"id":1,"nombre":"Eq21","img":"./img/eq21.png","marca":"Adidas","stock":[{"talle":40,"cantidad":10},{"talle":42,"cantidad":8},{"talle":43,"cantidad":5}],"precio":28000},
+    {"id":16,"nombre":"Formula","img":"./img/Formula.png","marca":"Diadora","stock":[{"talle":34,"cantidad":1},{"talle":35,"cantidad":3},{"talle":38,"cantidad":4},{"talle":36,"cantidad":12}],"precio":17800},
+    {"id":17,"nombre":"Corigliano","img":"./img/corigliano.png","marca":"Diadora","stock":[{"talle":39,"cantidad":8},{"talle":42,"cantidad":5},{"talle":43,"cantidad":3}],"precio":17300},
+    {"id":5,"nombre":"Graviton Pro","img":"./img/GravitonPro.png","marca":"Puma","stock":[{"talle":40,"cantidad":5},{"talle":42,"cantidad":5}],"precio":28600},
+    {"id":19,"nombre":"Solarsmash Rct","img":"./img/solarsmashRct.png","marca":"Puma","stock":[{"talle":35,"cantidad":8},{"talle":36,"cantidad":8},{"talle":38,"cantidad":3},{"talle":37,"cantidad":5}],"precio":28600},
+    {"id":20,"nombre":"Gel-Rebound","img":"./img/gelRebound.png","marca":"Asics","stock":[{"talle":40,"cantidad":3},{"talle":41,"cantidad":3},{"talle":42,"cantidad":3}],"precio":25800}
+]
