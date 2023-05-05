@@ -3,6 +3,8 @@ const contenedorProductos = document.getElementById("contenedorProductos")
 const contenedorCarrito = document.getElementById("contenedorCarrito")
 const btnCarrito = document.getElementById("btnCarrito")
 const vaciarCarrito = document.getElementById("btnVaciarCarrito")
+const finalizarCompra = document.getElementById("btnFinalizarCompra")
+const reiniciarServidor = document.getElementById("btnReiniciarServidor")
 const filtroMarca = document.getElementById("filtroMarca")
 const filtroTalle = document.getElementById("filtroTalle")
 const contedorPriceSlider = document.getElementById("contedorPriceSlider")
@@ -68,7 +70,7 @@ class ProductHandler {
     cargarCarritoDelLocal(){
         console.log("cargarCarritoDelLocal(");
         this.carritoCompra = JSON.parse(localStorage.getItem(`carrito`)) || []
-        console.log(")")
+        console.log(")cargarCarritoDelLocal")
     }
     /**
      * Ordena de menor a mayor los stocks de cada producto segun su talle
@@ -78,7 +80,7 @@ class ProductHandler {
         for (const producto of this.listaProductos) {
             producto.stock.sort((talleA, talleB) => talleA.talle - talleB.talle);
         }
-        console.log(")")
+        console.log(")ordenarPorTalles")
     }
     /**
      * Elimina los stocks de los productos que no tienen talle y si el producto no tiene ningun talle en stock lo elimina
@@ -89,7 +91,7 @@ class ProductHandler {
             producto.stock = producto.stock.filter(talle => talle.cantidad !== 0)
         }
         this.listaProductos = this.listaProductos.filter(producto => producto.stock.length !== 0)
-        console.log(")")
+        console.log(")eliminarTalleSinStock")
     }
     /**
      * Ordena la lista de productos por ID, luego los talles de menor a mayor y ademas retira los talles con stock 0
@@ -99,7 +101,7 @@ class ProductHandler {
         this.listaProductos.sort((idA, idB) => idA.id - idB.id)
         this.ordenarPorTalles()
         this.eliminarTalleSinStock()
-        console.log(")");
+        console.log(")ordenarStock");
     }
     /**
      * Crea las tarjetas de los productos dentro de listaFiltrada (si no se filtra nada es igual a listaProductos) y los muestra en el DOM
@@ -137,7 +139,7 @@ class ProductHandler {
                 </div>
             </div>`
         }
-        console.log(")")
+        console.log(")mostrarProductos")
     }
     /**
     * Carga las tarjetas en el DOM correpondiente a los productos dentro de carritoCompra, como el icono del boton de carrito y su indicador de cantidad de productos
@@ -189,7 +191,7 @@ class ProductHandler {
         }
         contenedorCarrito.innerHTML += `<p class="precioTotal">Precio Total: <strong>$${this.precioTotal} </strong> </p>`
         this.actualizarDOMContadorCarrito()
-        console.log(")")
+        console.log(")mostrarCarrito")
     }
     /**
     * Muestro el icono de cantidad de elementos del carrito
@@ -206,7 +208,7 @@ class ProductHandler {
         } 
         else
             btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
-        console.log(")")
+        console.log(")actualizarDOMContadorCarrito")
     }
     /**
      * Carga los valores del menu de cantidad, se llama si se modifica el menu de talles.
@@ -230,7 +232,7 @@ class ProductHandler {
             }
             cantidadMax.innerHTML = `(${cantidadStockXTalle})`
         }
-        console.log(")")
+        console.log(")cargarCantidad")
     }
     /**
      * Se encarga de agregar el/los productos a comprar al carrito. Si ya existe lo suma al existente de haber stock y si no pushea el nuevo producto
@@ -291,35 +293,63 @@ class ProductHandler {
                 text: 'Debe colocar un talle y una cantidad',
             })
         }
-        console.log(")")
+        console.log(")addCompra")
     }
     /**
      * Vacia el el carrito tanto en el objeto que lo aloja como en el DOM y lo almacenado en el localStorage
      */
     vaciarCarrito (){
-        console.log("vaciar_carrito(");
-            Swal.fire({
-                title: 'Seguro que desea vaciar el Carrito?',
+        console.log("vaciarCarrito(");
+        this.carritoCompra=[]
+        localStorage.removeItem(`carrito`)
+        contenedorCarrito.innerHTML=`<p class="precioTotal">Precio Total: <strong>$0 </strong> </p>`
+        btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
+        console.log(")vaciarCarrito")
+    }
+    /**
+     * Borra el objeto de listaProductos que se usa como stock en el programa almacenado en localStorage
+     */
+    reiniciarServidor(){
+        console.log("reiniciarServidor(");
+        Swal.fire({
+            title: 'Seguro que desea reiniciar el servidor?',
                 text: "No podrás revertir esta acción",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, vaciar carrito'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.carritoCompra=[]
-                    localStorage.removeItem(`carrito`)
-                    contenedorCarrito.innerHTML=`<p class="precioTotal">Precio Total: <strong>$0 </strong> </p>`
-                    btnCarrito.innerHTML = `<i class="fa-sharp fa-solid fa-cart-shopping fa-lg"></i>`
-                    Swal.fire(
-                    'Vaciado!',
-                    'El carrito se ha vaciado',
+                confirmButtonText: 'Sí, reiniciar servidor'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Reiniciado!',
+                    'El servidor se ha reiniciado!',
                     'success'
-                    )
-                }
-            })
-        console.log(")")
+                )
+                localStorage.removeItem(`listaProductos`)
+                this.vaciarCarrito()
+                setTimeout(()=>{(location.reload())},1000)
+            }
+        })
+        console.log(")reiniciarServidor");
+    }
+    
+    finalizarCompra(){
+        console.log("finalizarCompra(");
+        //consumir los elementos del carrito 
+        this.carritoCompra.forEach(compra=>{
+            let producto =this.listaProductos.find(producto=> producto.id==compra.id)
+            const indexTalle= producto.stock.findIndex(stock=>stock.talle==compra.talle)
+            producto.stock[indexTalle].cantidad -= compra.cantidad
+        })
+        this.ordenarStock()
+        this.listaFiltrada=this.listaProductos
+        this.reiniciarFiltros()
+        this.crearOpcionesFiltro()
+        this.mostrarProductos()
+        this.vaciarCarrito()
+        localStorage.setItem(`listaProductos`, JSON.stringify(this.listaProductos))
+        console.log(")finalizarCompra");
     }
     /**
      * Calcula el precio total de todos los objetos dentro de carritoCompra
@@ -330,7 +360,7 @@ class ProductHandler {
         this.carritoCompra.forEach(compra => {
             this.precioTotal= this.precioTotal + (compra.precio * compra.cantidad)
         })
-        console.log(")")
+        console.log(")calcularPrecioTotal")
     }
     /**
      * Suma en 1 la cantidad del objeto dentro de carritoCompra cuya idea sea compra.id, de validarse las condiciones
@@ -356,7 +386,7 @@ class ProductHandler {
         }
         this.mostrarCarrito()
         localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
-        console.log(")");
+        console.log(")plusCantidad");
     }
     /**
      * Resta en 1 la cantidad del objeto dentro de carritoCompra cuya idea sea compra.id, de validarse las condiciones
@@ -380,7 +410,7 @@ class ProductHandler {
         }
         this.mostrarCarrito()
         localStorage.setItem(`carrito`, JSON.stringify(this.carritoCompra))
-        console.log(")");
+        console.log(")subCantidad");
     }
     /**
      * Elimina el elemento compra de carritoCompra
@@ -405,7 +435,7 @@ class ProductHandler {
             }
         })
         
-        console.log(")");
+        console.log(")eliminarCompra");
     }
     /**
      * Crea las listas de filtrado segun talle y marca (tallesDiferentes y marcasDiferentes)
@@ -469,7 +499,7 @@ class ProductHandler {
                 }
             })
         })
-        console.log(")");
+        console.log(")creaListasFiltro");
     }
     /**
      * Crea las opciones para el filtrado de Marca y Talles
@@ -512,7 +542,7 @@ class ProductHandler {
                 </div>
             `
         })
-        console.log(")");
+        console.log(")crearOpcionesFiltro");
     }
     /**
      * Genera la tabla que determina que elemento estan activos para realizar el filtrado
@@ -538,7 +568,14 @@ class ProductHandler {
             fltTalle.value ="0"
             xDiferentes[xDiferentes.findIndex(obj=>obj.nombre==filtro.nombre)].filtrado= false
         }
-        console.log(")");
+        console.log(")generarTablaFiltro");
+    }
+    /**
+     * Reinicia los filtros
+     */
+    reiniciarFiltros(){
+        this.marcasDiferentes = []
+        this.tallesDiferentes = []
     }
     /**
     * Filtra los productos segun los valores seleccionados en la botonera de filtros
@@ -581,7 +618,7 @@ class ProductHandler {
         })
         this.crearOpcionesFiltro()
         this.mostrarProductos()
-        console.log(")");
+        console.log(")filtrarSegunTabla");
     }
 }   
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
